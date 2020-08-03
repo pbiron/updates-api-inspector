@@ -4,8 +4,11 @@
  * Plugin Name: Updates API Inspector
  * Description: Inspect various aspects of the Updates API.
  * Author: Paul V. Biron/Sparrow Hawk Computing
- * Author URI: http://sparrowhawkcomputing.com/
+ * Author URI: https://sparrowhawkcomputing.com/
+ * Plugin URI: https://github.com/pbiron/updates-api-inspector
  * Version: 0.1.1
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 namespace SHC\Updates_API_Inspector;
