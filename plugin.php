@@ -339,7 +339,7 @@ class Plugin {
 				 ?>
 				<div class='core'>
 				</div>
-				<textarea rows='<?php echo $rows ?>'><?php echo $this->pretty_print_var_export( var_export( $this->request, true ) ) ?></textarea>
+				<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->request, true ) ) ?></textarea>
 			</fieldset>
 			<?php
 				if ( $this->error ) {
@@ -349,7 +349,7 @@ class Plugin {
 				<p>
 					<?php esc_html_e( 'An error occured during the request.', 'updates-api-inspector' ) ?>
 				</p>
-				<textarea rows='<?php echo $rows ?>'><?php echo $this->pretty_print_var_export( var_export( $this->error, true ) ) ?></textarea>
+				<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->error, true ) ) ?></textarea>
 			</fieldset>
 			<?php
 				} else {
@@ -383,7 +383,7 @@ class Plugin {
 								break;
 						}
 					 ?>
-					<textarea rows='<?php echo $rows ?>'><?php echo $this->pretty_print_var_export( var_export( $this->response, true ) ) ?></textarea>
+					<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->response, true ) ) ?></textarea>
 				</fieldset>
 				<fieldset id='transient'>
 					<legend><?php esc_html_e( 'Transient Value', 'updates-api-inspector' ) ?></legend>
@@ -440,7 +440,7 @@ class Plugin {
 								break;
 						}
 					 ?>
-					<textarea rows='<?php echo $rows ?>'><?php echo $this->pretty_print_var_export( var_export( get_site_transient( "update_{$current}" ), true ) ) ?></textarea>
+					<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( get_site_transient( "update_{$current}" ), true ) ) ?></textarea>
 				</fieldset>
 			</fieldset>
 			<?php
@@ -502,9 +502,15 @@ class Plugin {
 	}
 
 	.updates-api-inspector textarea {
+		font-family: monospace;
 		margin: 1em 0;
 		resize: both;
+		tab-size: 4;
 		width: 100%;
+	}
+
+	.updates-api-inspector textarea[readonly] {
+		background-color: #fff; /* override WP's forms.css, which uses #eee for textarea[readonly] */
 	}
 
 	#request_types {
