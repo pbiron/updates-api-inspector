@@ -8,7 +8,7 @@
  * Version: 0.1.1
  */
 
-namespace SHC;
+namespace SHC\Updates_API_Inspector;
 
 use WP_Error;
 
