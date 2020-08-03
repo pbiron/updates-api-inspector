@@ -9,7 +9,7 @@ License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z6D97FA595WSU
 
-Inspect various aspects of the Updates API
+Inspect various aspects of the WordPress Updates API
 
 == Description ==
 
