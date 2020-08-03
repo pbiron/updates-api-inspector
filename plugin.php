@@ -26,7 +26,6 @@ defined( 'ABSPATH' ) || die;
  * @todo make the strings displayed easier to deal with, there is ALOT of
  *       repeation and it's a pain to keep the request-type specific strings
  *       in sync with one other.
- * @todo add help tabs
  */
 class Plugin {
 	/**
@@ -145,7 +144,7 @@ class Plugin {
 
 		// wp_version_check(), i.e., the core check, doesn't need this.
 		if ( 'plugins' === $type || 'themes' === $type ) {
-			// trick core into thinking the transient has been set recently,
+			// trick core into thinking the transient has not been set recently,
 			// so that it's throttling mechanism doesn't cause it to return early.
 			$current = get_site_transient( $transient_name );
 			if ( ! is_object( $current ) ) {
