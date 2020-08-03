@@ -329,7 +329,7 @@ class Plugin {
 						case 'core':
 				 ?>
 						<p>
-							<?php _e( '<code>query_stirng</code> is transmitted as part of the query string (the part after <code>?</code> in the URL) but is displayed as part of <code>$options</code> here to make the output easier to read.', 'updates-api-inspector' ) ?>
+							<?php _e( '<code>query_string</code> is transmitted as part of the query string (the part after <code>?</code> in the URL) but is displayed as part of <code>$options</code> here to make the output easier to read.', 'updates-api-inspector' ) ?>
 						</p>
 				<?php
 							break;

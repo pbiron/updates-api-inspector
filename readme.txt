@@ -72,7 +72,7 @@ A number of other hooks can be used, but except in *very special** cases I would
 
 Many considerations go into deciding which hook to use and I couldn't possibly give those considerations their due here...so I won't even try.
 
-= While this plugin work in versions of WordPress prior to 5.5.0? =
+= Will this plugin work in versions of WordPress prior to 5.5.0? =
 
 It should!  My main motivation for releasing it _now_ is to help developers of externally hosted plugins/themes prepare for the release of 5.5.0, this plugin should work just fine with previous versions (although I have only tested it with 5.5.0).
 
