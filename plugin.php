@@ -676,6 +676,8 @@ class Plugin {
 										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
 										'<code>no_update</code>'
 									);
+									echo '&nbsp;&nbsp;';
+									esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 							?>
 						</p>
 					</div>
@@ -739,6 +741,8 @@ class Plugin {
 										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their theme!', 'updates-api-inspector' ),
 										'<code>no_update</code>'
 									);
+								echo '&nbsp;&nbsp;';
+								esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 							?>
 						</p>
 					</div>
