@@ -908,9 +908,6 @@ class Plugin {
 	 *
 	 * @param mixed $variable The variable to be pretty printed.
 	 * @return string
-	 *
-	 * @todo extend the state machine used for indentation to also align '=>' in
-	 *       per WPCS.
 	 */
 	protected function pretty_print( $variable ) {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
@@ -932,29 +929,48 @@ class Plugin {
 			$str
 		);
 
-		// Replace leading spaces with tabs using a little state machine.
+		// Replace leading spaces with tabs and align '=>' ala WPCS using a little state machine.
+		// @todo the state machine is pretty brittle, especially for '=>' alignment!!
 		$lines                  = array_map( 'rtrim', explode( "\n", $str ) );
-		$num_lines              = count( $lines ) - 1;
 		$indent                 = 0;
 		$last_char_on_prev_line = null;
+		$array_stack            = array();
 
 		foreach ( $lines as $i => &$line ) {
 			$last_char_on_line = substr( $line, -1 );
 			$line              = ltrim( $line );
 
-			// treat the last lines specially.
-			if ( $num_lines === $i ) {
-				break;
-			}
-
 			if ( '(' === $last_char_on_prev_line ) {
 				// previous line was start of an array or object,
 				// so increase indentation.
 				$indent++;
-			} elseif ( '),' === $line ) {
-				// previous line as the end of an array or object,
+
+				$array_stack[ $indent ][] = $i;
+			} elseif ( '),' === $line || ')' === $line ) {
+				// end of an arrary or object.
+				// align '=>' based on the longest key in the array/object.
+				// first, find the max length of keys.
+				$max_length = 0;
+				foreach ( $array_stack[ $indent ] as $k ) {
+					$key        = preg_replace( '/^\s+\'([^\']+)\'\s+=>.*$/U', '$1', $lines[ $k ] );
+					$max_length = max( $max_length, strlen( $key ) );
+				}
+
+				// now that we know the max length key, do the actually alignment.
+				foreach ( $array_stack[ $indent ] as $k ) {
+					$key         = preg_replace( '/^\s+\'([^\']+)\'\s+=>.*$/U', '$1', $lines[ $k ] );
+					$padding     = str_repeat( ' ', $max_length - strlen( $key ) + 1 );
+					$lines[ $k ] = preg_replace( '/^(\s+\'[^\']+\')(\s+)(=>.*$)/U', "\$1{$padding}\$3", $lines[ $k ] );
+				}
+
+				// pop the array context off the stack.
+				$array_stack[ $indent ] = array();
+
+				// previous line was the end of an array or object,
 				// so decrease indentation.
 				$indent--;
+			} else {
+				$array_stack[ $indent ][] = $i;
 			}
 
 			$line                   = str_repeat( "\t", $indent ) . $line;
