@@ -544,9 +544,9 @@ class Plugin {
 									/* translators: 1: variable name, 2: function call, 3: link to code reference */
 									esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
 									'<code>$new_option</code>',
-									"<code>set_site_transient( 'update_plugins', \$new_option )</code>",
+									"<code>set_site_transient( 'update_themes', \$new_option )</code>",
 									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-									__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+									__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
 								);
 							?>
 					</p>
