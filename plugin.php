@@ -92,8 +92,6 @@ class Plugin {
 		add_action( 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
 		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
 		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
-
-		return;
 	}
 
 	/**
@@ -121,8 +119,6 @@ class Plugin {
 				wp_die( $message, __( 'Something went wrong.', 'updates-api-inspector' ), 403 );
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -247,8 +243,6 @@ class Plugin {
 			$this->error    = '';
 			$this->response = json_decode( wp_remote_retrieve_body( $response ), true );
 		}
-
-		return;
 	}
 
 	/**
@@ -453,8 +447,6 @@ class Plugin {
 	 ?>
 </div>
 <?php
-
-		return;
 	}
 
 	/**
@@ -476,8 +468,6 @@ class Plugin {
 			'updates-api-inspector',
 			array( $this, 'render_tools_page' )
 		);
-
-		return;
 	}
 
 	/**
@@ -523,8 +513,6 @@ class Plugin {
 	}
 </style>
 <?php
-
-		return;
 	}
 
 	/**
@@ -558,8 +546,6 @@ class Plugin {
 			'<p>' . __( '<a href="https://make.wordpress.org/core/2020/07/30/recommended-usage-of-the-updates-api-to-support-the-auto-updates-ui-for-plugins-and-themes-in-wordpress-5-5">Recommended usage of the Updates API to support the auto-updates UI for Plugins and Themes in WordPress 5.5</a>' ) . '</p>';
 
 		$screen->set_help_sidebar( $sidebar );
-
-		return;
 	}
 
 	/**
