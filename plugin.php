@@ -112,7 +112,7 @@ class Plugin {
 	 */
 	function maybe_do_update_check() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$current = isset( $_REQUEST['type'] ) && in_array( $_REQUEST['type'], [ 'core', 'plugins' , 'themes' ], true ) ? un_slash( $_REQUEST['type'] ) : '';
+		$current = isset( $_REQUEST['type'] ) && in_array( $_REQUEST['type'], [ 'core', 'plugins' , 'themes' ], true ) ? wp_unslash( $_REQUEST['type'] ) : '';
 		if ( $current ) {
 			check_admin_referer( 'updates-api-inspector' );
 
