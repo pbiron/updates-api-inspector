@@ -59,27 +59,36 @@ class Plugin {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @var string
+	 * @var array()
 	 */
-	protected $request = '';
+	protected $request = array();
 
 	/**
 	 * The successful response for the current request.
 	 *
 	 * @since 0.1.0
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected $response = '';
+	protected $response = array();
+
+	/**
+	 * The site transient value as set.
+	 *
+	 * @since 0.1.1
+	 *
+	 * @var object
+	 */
+	protected $transient_as_set;
 
 	/**
 	 * The error response for the current request.
 	 *
 	 * @since 0.1.0
 	 *
-	 * @var string
+	 * @var WP_Error|array
 	 */
-	protected $error = '';
+	protected $error;
 
 	/**
 	 * Add hooks.
@@ -163,15 +172,27 @@ class Plugin {
 		// Query the API.
 		switch ( $type ) {
 			case 'core':
+				add_action( 'set_site_transient_update_core', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
+
 				wp_version_check( array(), true );
+
+				remove_action( 'set_site_transient_update_core', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 			case 'plugins':
+				add_action( 'set_site_transient_update_plugins', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
+
 				wp_update_plugins();
+
+				remove_action( 'set_site_transient_update_plugins', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 			case 'themes':
+				add_action( 'set_site_transient_update_themes', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
+
 				wp_update_themes();
+
+				remove_action( 'set_site_transient_update_themes', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 		}
@@ -242,11 +263,33 @@ class Plugin {
 		// Now, capture the "response", whether an error or a successful response.
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$this->error    = $response;
-			$this->response = '';
+			$this->response = array();
 		} else {
-			$this->error    = '';
+			$this->error    = array();
 			$this->response = json_decode( wp_remote_retrieve_body( $response ), true );
 		}
+
+		return;
+	}
+
+	/**
+	 * Capture the site transient as set.
+	 *
+	 * Note that this will be called multiple times during each update check,
+	 * because of the way those are done (1 or 2 times to update the `last_checked` value,
+	 * and once for setting the actual value).  Ulimately, the last call is the one
+	 * shown in our UI.
+	 *
+	 * @since 0.1.1
+	 *
+	 * @param mixed $value Site transient value.
+	 * @return void
+	 *
+	 * @action set_site_transient_update_core, set_site_transient_update_plugins,
+	 *         set_site_transient_update_themes
+	 */
+	public function capture_transient_as_set( $value ) {
+		$this->transient_as_set = $value;
 
 		return;
 	}
@@ -317,7 +360,8 @@ class Plugin {
 							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
 							'<code>$options</code>',
 							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
-							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
 						);
 					?>
 				</p>
@@ -344,7 +388,8 @@ class Plugin {
 							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
 							'<code>$options</code>',
 							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
-							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
 						);
 					?>
 				</p>
@@ -360,7 +405,8 @@ class Plugin {
 							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
 							'<code>$options</code>',
 							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
-							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
 						);
 					?>
 				</p>
@@ -426,8 +472,111 @@ class Plugin {
 					?>
 					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->response ) ); ?></textarea>
 				</fieldset>
-				<fieldset id='transient'>
-					<legend><?php esc_html_e( 'Transient Value', 'updates-api-inspector' ); ?></legend>
+				<fieldset id='transient-set'>
+					<legend><?php esc_html_e( 'Transient Value As Set', 'updates-api-inspector' ); ?></legend>
+					<?php
+					switch ( $current ) {
+						case 'core':
+							?>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: variable name, 2: function call, 3: link to code reference */
+									esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+									'<code>$updates</code>',
+									"<code>set_site_transient( 'update_core', \$updates )</code>",
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+							<?php
+
+							break;
+						case 'plugins':
+							?>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: variable name, 2: function call, 3: link to code reference */
+									esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+									'<code>$new_option</code>',
+									"<code>set_site_transient( 'update_plugins', \$new_option )</code>",
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+							<?php
+
+							break;
+						case 'themes':
+							?>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: variable name, 2: function call, 3: link to code reference */
+									esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+									'<code>$new_option</code>',
+									"<code>set_site_transient( 'update_plugins', \$new_option )</code>",
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+							<?php
+
+							break;
+					}
+					?>
+					<p>
+							<?php
+								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+							?>
+					</p>
+					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( get_site_transient( "update_{$current}" ) ) ); ?></textarea>
+				</fieldset>
+				<fieldset id='transient-read'>
+					<legend><?php esc_html_e( 'Transient Value As Read', 'updates-api-inspector' ); ?></legend>
 					<?php
 					switch ( $current ) {
 						case 'core':
@@ -438,6 +587,32 @@ class Plugin {
 									/* translators: function call */
 									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
 									"<code>get_site_transient( 'update_core' )</code>"
+								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: variable name */
+									esc_html__( 'In this value, %s is what determines which core updates are available, both manually in the dashboad and as auto-updates.', 'updates-api-inspector' ),
+									'<code>updates</code>'
+								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: link to code reference */
+									esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent core from auto-updating.', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_core">auto_update_core</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' )
 								);
 							?>
 					</p>
@@ -453,13 +628,39 @@ class Plugin {
 									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
 									"<code>get_site_transient( 'update_plugins' )</code>"
 								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: variable name */
+									esc_html__( 'In this value, %s is what determines which plugin updates are available, both manually in the dashboad and as auto-updates.', 'updates-api-inspector' ),
+									'<code>response</code>'
+								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: link to code reference */
+									esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent the plugin from auto-updating.', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_type">auto_update_plugin</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' )
+								);
 							?>
 					</p>
 					<p>
 							<?php
 								printf(
 									/* translators: 1: variable name, 2: variable name, 3: ??? */
-									esc_html__( 'The values of %1$s and %2$s will contain themes that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
+									esc_html__( 'The values of %1$s and %2$s will contain plugins that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
 									'<code>response</code>',
 									'<code>no_update</code>',
 									'<strong>' . esc_html_x( 'objects', 'PHP data type', 'updates-api-inspector' ) . '</strong>'
@@ -490,6 +691,32 @@ class Plugin {
 									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
 									"<code>get_site_transient( 'update_themes' )</code>"
 								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: variable name */
+									esc_html__( 'In this value, %s is what determines which theme updates are available, both manually in the dashboad and as auto-updates.', 'updates-api-inspector' ),
+									'<code>response</code>'
+								);
+								echo '&nbsp;&nbsp;';
+								printf(
+									/* translators: link to code reference */
+									esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent the theme from auto-updating.', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_type">auto_update_theme</a>', 'updates-api-inspector' )
+								);
+							?>
+					</p>
+					<p>
+							<?php
+								printf(
+									/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
+									esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
+									'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' )
+								);
 							?>
 					</p>
 					<p>
@@ -509,7 +736,7 @@ class Plugin {
 								echo '<strong>' . esc_html( 'Important', 'updates-api-inspector' ) . '</strong>:' .
 									sprintf(
 										/* translators: variable name */
-										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
+										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their theme!', 'updates-api-inspector' ),
 										'<code>no_update</code>'
 									);
 							?>
