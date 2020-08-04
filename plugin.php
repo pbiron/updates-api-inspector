@@ -1,5 +1,4 @@
-<?php
-
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * Plugin Name: Updates API Inspector
  * Description: Inspect various aspects of the Updates API.
@@ -32,8 +31,10 @@ class Plugin {
 	 * Our static instance.
 	 *
 	 * @since 0.1.0
+	 *
+	 * @var Plugin
 	 */
-	static $instance;
+	protected static $instance;
 
 	/**
 	 * Our version number.
@@ -110,16 +111,20 @@ class Plugin {
 	 *
 	 * @action load-tools_page_updates-api-inspector
 	 */
-	function maybe_do_update_check() {
-		$current = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : '';
-		if ( $current ) {
+	public function maybe_do_update_check() {
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		$type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
+		if ( $type ) {
 			check_admin_referer( 'updates-api-inspector' );
 
-			if ( ! $this->update_check( $current ) ) {
-				$message = sprintf( __( 'Updates API Inspector: Unknown update type: %s', 'updates-api-inspector' ), $current );
+			if ( ! in_array( $type, array( 'core', 'plugins', 'themes' ), true ) ) {
+				/* translators: Updates API endpoint. */
+				$message = sprintf( __( 'Updates API Inspector: Unknown update type: %s', 'updates-api-inspector' ), $type );
 
-				wp_die( $message, __( 'Something went wrong.', 'updates-api-inspector' ), 403 );
+				wp_die( esc_html( $message ), esc_html__( 'Something went wrong.', 'updates-api-inspector' ), 403 );
 			}
+
+			$this->update_check( $type );
 		}
 
 		return;
@@ -133,13 +138,9 @@ class Plugin {
 	 * @since 0.1.0
 	 *
 	 * @param string $type The Updates API endpoint type.  Accepts 'core', 'plugins', 'themes'.
-	 * @return bool True if an update check was performed, false otherwise.
+	 * @return void
 	 */
 	protected function update_check( $type ) {
-		if ( ! in_array( $type, array( 'core', 'plugins', 'themes' ), true ) ) {
-			return false;
-		}
-
 		$transient_name = "update_{$type}";
 
 		// wp_version_check(), i.e., the core check, doesn't need this.
@@ -148,7 +149,7 @@ class Plugin {
 			// so that it's throttling mechanism doesn't cause it to return early.
 			$current = get_site_transient( $transient_name );
 			if ( ! is_object( $current ) ) {
-				$current = new \stdClass;
+				$current = new \stdClass();
 			}
 			$current->last_checked = time() - ( 12 * HOUR_IN_SECONDS ) - 1;
 			set_site_transient( $transient_name, $current );
@@ -160,7 +161,7 @@ class Plugin {
 		add_action( 'http_api_debug', array( $this, 'capture' ), PHP_INT_MAX, 5 );
 
 		// Query the API.
-		switch( $type ) {
+		switch ( $type ) {
 			case 'core':
 				wp_version_check( array(), true );
 
@@ -178,7 +179,7 @@ class Plugin {
 		// unhook our capture callback.
 		remove_action( 'http_api_debug', array( $this, 'capture' ) );
 
-		return true;
+		return;
 	}
 
 	/**
@@ -189,16 +190,16 @@ class Plugin {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param array|WP_Error $response 	HTTP response or WP_Error object.
-	 * @param string $context           Context under which the hook is fired.
-	 * @param string $class             HTTP transport used.
-	 * @param array $parsed_args        HTTP request arguments.
-	 * @param string $url               The request URL.
+	 * @param array|WP_Error $response    HTTP response or WP_Error object.
+	 * @param string         $context     Context under which the hook is fired.
+	 * @param string         $class       HTTP transport used.
+	 * @param array          $parsed_args HTTP request arguments.
+	 * @param string         $url         The request URL.
 	 * @return void
 	 *
 	 * @action http_api_debug
 	 */
-	function capture( $response, $context, $class, $parsed_args, $url ) {
+	public function capture( $response, $context, $class, $parsed_args, $url ) {
 		// Even though this method is hooked/unhooked right around the core functions
 		// that access the API, we check the URL just to be sure that we don't
 		// capture incorrect info should something do additional wp_remote_xxx() calls
@@ -225,10 +226,9 @@ class Plugin {
 		);
 		if ( preg_match( '@^https?://api.wordpress.org/core/version-check/\d+(\.\d+)*/@', $url ) ) {
 			// core update check.
-
 			// parse the query string and add it to the request and then
 			// strip off the query_string from our local copy of it.
-			parse_str( parse_url( $url, PHP_URL_QUERY ), $this->request['query_string'] );
+			parse_str( wp_parse_url( $url, PHP_URL_QUERY ), $this->request['query_string'] );
 			$this->url = preg_replace( '@\?.*$@', '', $url );
 		} else {
 			// plugins or themes check.
@@ -263,14 +263,15 @@ class Plugin {
 	 *       and it is silly to repeat things over and over again.  core does that and
 	 *       I hate it!
 	 */
-	function render_tools_page() {
+	public function render_tools_page() {
 		$checks = array(
 			'core'    => __( 'Core', 'updates-api-inspector' ),
 			'plugins' => __( 'Plugins', 'updates-api-inspector' ),
 			'themes'  => __( 'Themes', 'updates-api-inspector' ),
 		);
 
-		$current = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		$current = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
 		switch ( $current ) {
 			case 'core':
 				$core_function = 'wp_version_check';
@@ -282,177 +283,250 @@ class Plugin {
 
 				break;
 		}
- ?>
+		?>
 
 <div class='wrap updates-api-inspector'>
-	<h1><?php esc_html_e( get_admin_page_title() ) ?></h1>
+	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-	<p><?php esc_html_e( 'This tool will allow you to inspect requests/responses from the Updates API.  Simply click on the request type...and see the results.', 'updates-api-inspector' ) ?></p>
+	<p><?php esc_html_e( 'This tool will allow you to inspect requests/responses from the Updates API.  Simply click on the request type...and see the results.', 'updates-api-inspector' ); ?></p>
 
 	<ul id='request_types'>
 		<?php
-			foreach ( $checks as $type => $label ) {
-				$href = esc_url( wp_nonce_url( add_query_arg( 'type', $type ), 'updates-api-inspector' ) );
-		 ?>
+		foreach ( $checks as $type => $label ) {
+			$href = wp_nonce_url( add_query_arg( 'type', $type ), 'updates-api-inspector' );
+			?>
 		<li>
-			<a href='<?php echo $href ?>'><?php esc_html_e( $label ) ?></a>
+			<a href='<?php echo esc_url( $href ); ?>'><?php echo esc_html( $label ); ?></a>
+			<?php
+			if ( $current === $type ) {
+				?>
+			<span class='results-displayed'>(<?php esc_html_e( 'Results displayed', 'updates-api-inispector' ); ?>)</span>
 				<?php
-					if ( $current === $type ) {
-				 ?>
-						<span class='results-displayed'>(<?php esc_html_e( 'Results displayed', 'updates-api-inispector' ) ?>)</span>
-				<?php
-					}
-			 	 ?>
+			}
+			?>
 		</li>
 
-		<?php
-			}
-	 ?>
+			<?php
+		}
+		?>
 	</ul>
 
-	<?php
-
-	if ( $current ) {
-			$rows = 25;
-	 ?>
+		<?php
+		if ( $current ) {
+			?>
 	<div id='result'>
 		<form>
 			<fieldset id='request'>
-				<legend><?php esc_html_e( 'Request', 'updates-api-inspector' ) ?></legend>
+				<legend><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></legend>
 				<p>
-					<?php // @todo I know, this will be hard for translators...will address that in a later version ?>
-					<?php _e( "This is the value of <code>\$options</code> in <code>wp_remote_post( '{$this->url}', \$options )</code>, as called in <code>{$core_function}()</code>.", 'updates-api-inspector' ) ?>
+					<?php
+						printf(
+							/* translators: 1: x, 2: y, 3: z */
+							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+							'<code>$options</code>',
+							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
+							'<code>' . esc_html( $core_function ) . '()</code>'
+						);
+					?>
 				</p>
 				<p>
-					<?php _e( '<code>body</code> is json encoded when the request is made but has been decoded here to make the output easier to read.', 'updates-api-inspector' ) ?>
+					<?php
+						printf(
+							/* translators: x */
+							esc_html__( '%s is json encoded when the request is made but has been decoded here to make the output easier to read.', 'updates-api-inspector' ),
+							'<code>body</code>'
+						);
+					?>
 				</p>
-				<?php
-					switch ( $current ) {
-						case 'core':
-				 ?>
-						<p>
-							<?php _e( '<code>query_string</code> is transmitted as part of the query string (the part after <code>?</code> in the URL) but is displayed as part of <code>$options</code> here to make the output easier to read.', 'updates-api-inspector' ) ?>
-						</p>
-				<?php
-							break;
-					}
-				 ?>
-				<div class='core'>
-				</div>
-				<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->request, true ) ) ?></textarea>
+			<?php
+			switch ( $current ) {
+				case 'core':
+					?>
+				<p>
+					<?php
+						printf(
+							/* translators: 1 x, 2 y, 3 z */
+							esc_html__( '%1$s is transmitted as part of the query string (the part after %2$s in the URL) but is displayed as part of %3$s here to make the output easier to read.', 'updates-api-inspector' ),
+							'<code>query_string</code>',
+							'<code>?</code>',
+							'<code>$options</code>',
+						);
+					?>
+				</p>
+					<?php
+					break;
+			}
+			?>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->request, true ) ) );  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
 			</fieldset>
 			<?php
-				if ( $this->error ) {
-			 ?>
+			if ( $this->error ) {
+				?>
 			<fieldset id='error'>
-				<legend><?php esc_html_e( 'Error', 'updates-api-inspector' ) ?></legend>
+				<legend><?php esc_html_e( 'Error', 'updates-api-inspector' ); ?></legend>
 				<p>
-					<?php esc_html_e( 'An error occured during the request.', 'updates-api-inspector' ) ?>
+					<?php esc_html_e( 'An error occured during the request.', 'updates-api-inspector' ); ?>
 				</p>
-				<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->error, true ) ) ?></textarea>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->error, true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export	?></textarea>
 			</fieldset>
-			<?php
-				} else {
-			 ?>
+				<?php
+			} else {
+				?>
 			<fieldset id='success'>
 				<fieldset id='response'>
-					<legend><?php esc_html_e( 'API Response', 'updates-api-inspector' ) ?></legend>
+					<legend><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></legend>
 					<p>
-						<?php esc_html_e( 'This is the response from the API.', 'updates-api-inspector' ) ?>
+						<?php esc_html_e( 'This is the response from the API.', 'updates-api-inspector' ); ?>
 					</p>
 					<p>
-						<?php _e( 'The fields in this response are not documented anywhere, so do not take what is displayed here as <em>all-and-only</em> what may ever be returned!!', 'updates-api-inspector' ) ?>
-					</p>
-					<?php
-						switch ( $current ) {
-							case 'plugins':
-					 ?>
-					<p>
-						<?php _e( 'In general, only plugins hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted plugins.', 'updates-api-inspector' ) ?>
+						<?php
+							esc_html_e( 'The fields in this response are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+						?>
 					</p>
 					<?php
+					switch ( $current ) {
+						case 'plugins':
+							?>
+					<p>
+							<?php esc_html_e( 'In general, only plugins hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted plugins.', 'updates-api-inspector' ); ?>
+					</p>
+							<?php
 
-								break;
-							case 'themes':
-					 ?>
+							break;
+						case 'themes':
+							?>
 					<p>
-						<?php _e( 'In general, only themes hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted themes.', 'updates-api-inspector' ) ?>
+							<?php esc_html_e( 'In general, only themes hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted themes.', 'updates-api-inspector' ); ?>
 					</p>
-					<?php
+							<?php
 
-								break;
-						}
-					 ?>
-					<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( $this->response, true ) ) ?></textarea>
+							break;
+					}
+					?>
+					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->response, true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
 				</fieldset>
 				<fieldset id='transient'>
-					<legend><?php esc_html_e( 'Transient Value', 'updates-api-inspector' ) ?></legend>
+					<legend><?php esc_html_e( 'Transient Value', 'updates-api-inspector' ); ?></legend>
 					<?php
-						switch ( $current ) {
-							case 'core':
-					 ?>
+					switch ( $current ) {
+						case 'core':
+							?>
 					<p>
-						<?php _e( 'This is the value returned by <code>get_site_transient( \'update_core\' )</code>.', 'updates-api-inspector' ) ?>
+							<?php
+							printf(
+								/* translators: x */
+								esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
+								'<code>get_site_transient( \'update_core\' )</code>'
+							);
+							?>
 					</p>
 					<p>
-						<?php _e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as <em>all-and-only</em> what may ever be returned!!', 'updates-api-inspector' ) ?>
+							<?php
+								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+							?>
 					</p>
-					<?php
+							<?php
 
-								break;
-							case 'plugins':
-					 ?>
+							break;
+						case 'plugins':
+							?>
 					<p>
-						<?php _e( 'This is the value returned by <code>get_site_transient( \'update_plugins\' )</code>.', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: x */
+									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
+									"<code>get_site_transient( 'update_plugins' )</code>"
+								);
+							?>
 					</p>
 					<p>
-						<?php _e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as <em>all-and-only</em> what may ever be returned!!', 'updates-api-inspector' ) ?>
+							<?php
+								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+							?>
 					</p>
 					<p>
-						<?php _e( 'The values of <code>response</code> and <code>no_update</code> will contain plugins that are externally hosted (if any) and are arrays of <strong>objects</strong>.', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: 1 x, 2 y, 3 z */
+									esc_html__( 'The values of %1$s and %2$s will contain plugins that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
+									'<code>response</code>',
+									'<code>no_update</code>',
+									'<strong>objects</strong>'
+								);
+							?>
 					</p>
 					<div class='notice notice-warning inline'>
 						<p>
-							<?php _e( '<strong>Important</strong>: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate <code>no_update</code> with information about their plugin!', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: 1 x, 2 y */
+									esc_html__( '%1$s: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %2$s with information about their plugin!', 'updates-api-inspector' ),
+									'<strong>Important</strong>',
+									'<code>no_update</code>'
+								);
+							?>
 						</p>
 					</div>
-					<?php
+							<?php
 
-								break;
-							case 'themes':
-					 ?>
+							break;
+						case 'themes':
+							?>
 					<p>
-						<?php _e( 'This is the value returned by <code>get_site_transient( \'update_themes\' )</code>.', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: x */
+									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
+									"<code>get_site_transient( 'update_themes' )</code>"
+								);
+							?>
 					</p>
 					<p>
-						<?php _e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as <em>all-and-only</em> what may ever be returned!!', 'updates-api-inspector' ) ?>
+							<?php
+								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+							?>
 					</p>
 					<p>
-						<?php _e( 'The values of <code>response</code> and <code>no_update</code> will contain themes that are externally hosted (if any) and are arrays of <strong>arrays</strong>.', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: 1 x, 2 y, 3 z */
+									esc_html__( 'The values of %1$s and %2$s will contain themes that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
+									'<code>response</code>',
+									'<code>no_update</code>',
+									'<strong>arrays</strong>'
+								);
+							?>
 					</p>
 					<div class='notice notice-warning inline'>
 						<p>
-							<?php _e( '<strong>Important</strong>: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate <code>no_update</code> with information about their theme!', 'updates-api-inspector' ) ?>
+							<?php
+								printf(
+									/* translators: 1 x, 2 y */
+									esc_html__( '%1$s: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %2$s with information about their theme!', 'updates-api-inspector' ),
+									'<strong>Important</strong>',
+									'<code>no_update</code>'
+								);
+							?>
 						</p>
 					</div>
-					<?php
+							<?php
 
-								break;
-						}
-					 ?>
-					<textarea rows='<?php echo $rows ?>' readonly><?php echo $this->pretty_print_var_export( var_export( get_site_transient( "update_{$current}" ), true ) ) ?></textarea>
+							break;
+					}
+					?>
+					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( get_site_transient( "update_{$current}" ), true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
 				</fieldset>
 			</fieldset>
-			<?php
-				}
-			 ?>
+				<?php
+			}
+			?>
 		</form>
 	</div>
-	<?php
+			<?php
 		}
-	 ?>
+		?>
 </div>
-<?php
+		<?php
 
 		return;
 	}
@@ -468,7 +542,7 @@ class Plugin {
 	 *
 	 * @todo find a better cap.
 	 */
-	function admin_menu() {
+	public function admin_menu() {
 		add_management_page(
 			__( 'Updates API Inspector', 'updates-api-inspector' ),
 			__( 'Updates API', 'updates-api-inspector' ),
@@ -489,8 +563,8 @@ class Plugin {
 	 *
 	 * @action admin_print_styles-tools_page_updates-api-inspector
 	 */
-	function print_styles() {
- ?>
+	public function print_styles() {
+		?>
 <style id='updates-api-inspector'>
 	/* make legend look close to what core does for h2,h3 */
 	.updates-api-inspector legend {
@@ -502,11 +576,12 @@ class Plugin {
 	}
 
 	.updates-api-inspector textarea {
+		-moz-tab-size: 4;
 		font-family: monospace;
 		margin: 1em 0;
 		resize: both;
 		tab-size: 4;
-		width: 100%;
+		width: 95%;
 	}
 
 	.updates-api-inspector textarea[readonly] {
@@ -522,7 +597,7 @@ class Plugin {
 		font-weight: 600;
 	}
 </style>
-<?php
+		<?php
 
 		return;
 	}
@@ -536,7 +611,7 @@ class Plugin {
 	 *
 	 * @action load-tools_page_updates-api-inspector
 	 */
-	function add_help() {
+	public function add_help() {
 		$screen = get_current_screen();
 
 		$tabs = array(
@@ -567,8 +642,8 @@ class Plugin {
 	 *
 	 * @since 0.1.0
 	 */
-	static function get_instance() {
-		if  ( ! self::$instance ) {
+	public static function get_instance() {
+		if ( ! self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -580,7 +655,7 @@ class Plugin {
 	 *
 	 * @since 0.1.0
 	 */
-	function __construct() {
+	public function __construct() {
 		if ( isset( self::$instance ) ) {
 			return self::$instance;
 		}
@@ -594,26 +669,54 @@ class Plugin {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $str
+	 * @param string $str The string to pretty print.
 	 * @return string
 	 *
-	 * @todo align array keys and object properties based on the longest key/property, ala
-	 *       WPCS.  Doing so is WAY too much trouble this early in the dev of this
-	 *       plugin, but if I can later find an easy way to call phpcs, the sure,
-	 *       will do that.
+	 * @todo extend the state machine used for indentation to also align '=>' in
+	 *       per WPCS.
 	 */
 	protected function pretty_print_var_export( $str ) {
-		$str = preg_replace( '/=>\s+/', '=> ', $str );
-		$str = str_replace( 'array (', 'array(', $str );
-		$str = preg_replace( '/\d+ =>\s+/', '  ', $str );
-		$str = preg_replace( '/\(\s+\)/', '()', $str );
+		$str = preg_replace(
+			array(
+				'/=>\s+/',      // this includes newlines and leading whitespace on the next line.
+				'/array\s+\(/', // for some arrays, var_export() adds the extra whitespace, others it doesn't.
+				'/\d+ =>\s+/',  // strip numeric indexes from arrays.
+				'/\(\s+\)/',    // ensure empty arrays appear on 1 line.
+			),
+			array(
+				'=> ',
+				'array(',
+				'',
+				'()',
+			),
+			$str
+		);
 
-		// Replace leading spaces with tabs.
-		for ( $i = 10; $i >= 2 ; $i-- ) {
-			$str = preg_replace( "/^[ ]{{$i}}/m", str_repeat( "\t", $i / 2 ), $str );
+		// Replace leading spaces with tabs using a little state machine.
+		$lines     = array_map( 'rtrim', explode( "\n", $str ) );
+		$num_lines = count( $lines ) - 1;
+		$indent    = 0;
+		$prev_eol  = null;
+		foreach ( $lines as $i => &$line ) {
+			$eol  = substr( $line, -1 );
+			$line = ltrim( $line );
+
+			// treat the last lines specially.
+			if ( $num_lines === $i ) {
+				break;
+			}
+
+			if ( '(' === $prev_eol ) {
+				$indent++;
+			} elseif ( '),' === $line ) {
+				$indent--;
+			}
+
+			$line     = str_repeat( "\t", $indent ) . $line;
+			$prev_eol = $eol;
 		}
 
-		return $str;
+		return implode( "\n", $lines );
 	}
 }
 
