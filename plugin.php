@@ -272,17 +272,6 @@ class Plugin {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		$current = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
-		switch ( $current ) {
-			case 'core':
-				$core_function = 'wp_version_check';
-
-				break;
-			case 'plugins':
-			case 'themes':
-				$core_function = "wp_update_{$current}";
-
-				break;
-		}
 		?>
 
 <div class='wrap updates-api-inspector'>
@@ -305,7 +294,6 @@ class Plugin {
 			}
 			?>
 		</li>
-
 			<?php
 		}
 		?>
@@ -318,26 +306,6 @@ class Plugin {
 		<form>
 			<fieldset id='request'>
 				<legend><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></legend>
-				<p>
-					<?php
-						printf(
-							/* translators: 1: x, 2: y, 3: z */
-							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
-							'<code>$options</code>',
-							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
-							'<code>' . esc_html( $core_function ) . '()</code>'
-						);
-					?>
-				</p>
-				<p>
-					<?php
-						printf(
-							/* translators: x */
-							esc_html__( '%s is json encoded when the request is made but has been decoded here to make the output easier to read.', 'updates-api-inspector' ),
-							'<code>body</code>'
-						);
-					?>
-				</p>
 			<?php
 			switch ( $current ) {
 				case 'core':
@@ -345,7 +313,18 @@ class Plugin {
 				<p>
 					<?php
 						printf(
-							/* translators: 1 x, 2 y, 3 z */
+							/* translators: 1: a variable name, 2: function call, 3: link to code reference */
+							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+							'<code>$options</code>',
+							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
+							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
+						);
+					?>
+				</p>
+				<p>
+					<?php
+						printf(
+							/* translators: 1: variable name, 2 URL query string separator, 3 variable name */
 							esc_html__( '%1$s is transmitted as part of the query string (the part after %2$s in the URL) but is displayed as part of %3$s here to make the output easier to read.', 'updates-api-inspector' ),
 							'<code>query_string</code>',
 							'<code>?</code>',
@@ -354,10 +333,52 @@ class Plugin {
 					?>
 				</p>
 					<?php
+
+					break;
+				case 'plugins':
+					?>
+				<p>
+					<?php
+						printf(
+							/* translators: 1: variable name, 2: function call, 3: link to code reference */
+							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+							'<code>$options</code>',
+							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
+							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+						);
+					?>
+				</p>
+					<?php
+
+					break;
+				case 'themes':
+					?>
+				<p>
+					<?php
+						printf(
+							/* translators: 1: variable name, 2: function call, 3: link to code reference */
+							esc_html__( 'This is the value of %1$s in %2$s, as called in %3$s.', 'updates-api-inspector' ),
+							'<code>$options</code>',
+							"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
+							esc_html__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
+						);
+					?>
+				</p>
+					<?php
+
 					break;
 			}
 			?>
-				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->request, true ) ) );  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
+				<p>
+					<?php
+						printf(
+							/* translators: variable name */
+							esc_html__( '%s is json encoded when the request is made but has been decoded here to make the output easier to read.', 'updates-api-inspector' ),
+							'<code>body</code>'
+						);
+					?>
+				</p>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->request ) ); ?></textarea>
 			</fieldset>
 			<?php
 			if ( $this->error ) {
@@ -367,7 +388,7 @@ class Plugin {
 				<p>
 					<?php esc_html_e( 'An error occured during the request.', 'updates-api-inspector' ); ?>
 				</p>
-				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->error, true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export	?></textarea>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->error ) ); ?></textarea>
 			</fieldset>
 				<?php
 			} else {
@@ -388,7 +409,7 @@ class Plugin {
 						case 'plugins':
 							?>
 					<p>
-							<?php esc_html_e( 'In general, only plugins hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted plugins.', 'updates-api-inspector' ); ?>
+							<?php esc_html_e( 'In general, only plugins hosted in the .org repo will be included here; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted plugins.', 'updates-api-inspector' ); ?>
 					</p>
 							<?php
 
@@ -396,14 +417,14 @@ class Plugin {
 						case 'themes':
 							?>
 					<p>
-							<?php esc_html_e( 'In general, only themes hosted in the .org repo will be included; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted themes.', 'updates-api-inspector' ); ?>
+							<?php esc_html_e( 'In general, only themes hosted in the .org repo will be included here; however, in rare cases, something may have hooked into one of the lower-level hooks to inject directly into the API response information about externally hosted themes.', 'updates-api-inspector' ); ?>
 					</p>
 							<?php
 
 							break;
 					}
 					?>
-					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( $this->response, true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
+					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->response ) ); ?></textarea>
 				</fieldset>
 				<fieldset id='transient'>
 					<legend><?php esc_html_e( 'Transient Value', 'updates-api-inspector' ); ?></legend>
@@ -413,16 +434,11 @@ class Plugin {
 							?>
 					<p>
 							<?php
-							printf(
-								/* translators: x */
-								esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
-								'<code>get_site_transient( \'update_core\' )</code>'
-							);
-							?>
-					</p>
-					<p>
-							<?php
-								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+								printf(
+									/* translators: function call */
+									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
+									"<code>get_site_transient( 'update_core' )</code>"
+								);
 							?>
 					</p>
 							<?php
@@ -433,7 +449,7 @@ class Plugin {
 					<p>
 							<?php
 								printf(
-									/* translators: x */
+									/* translators: function call */
 									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
 									"<code>get_site_transient( 'update_plugins' )</code>"
 								);
@@ -441,29 +457,24 @@ class Plugin {
 					</p>
 					<p>
 							<?php
-								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
-							?>
-					</p>
-					<p>
-							<?php
 								printf(
-									/* translators: 1 x, 2 y, 3 z */
-									esc_html__( 'The values of %1$s and %2$s will contain plugins that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
+									/* translators: 1: variable name, 2: variable name, 3: ??? */
+									esc_html__( 'The values of %1$s and %2$s will contain themes that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
 									'<code>response</code>',
 									'<code>no_update</code>',
-									'<strong>objects</strong>'
+									'<strong>' . esc_html_x( 'objects', 'PHP data type', 'updates-api-inspector' ) . '</strong>'
 								);
 							?>
 					</p>
 					<div class='notice notice-warning inline'>
 						<p>
 							<?php
-								printf(
-									/* translators: 1 x, 2 y */
-									esc_html__( '%1$s: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %2$s with information about their plugin!', 'updates-api-inspector' ),
-									'<strong>Important</strong>',
-									'<code>no_update</code>'
-								);
+								echo '<strong>' . esc_html( 'Important', 'updates-api-inspector' ) . '</strong>:' .
+									sprintf(
+										/* translators: variable name */
+										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
+										'<code>no_update</code>'
+									);
 							?>
 						</p>
 					</div>
@@ -475,7 +486,7 @@ class Plugin {
 					<p>
 							<?php
 								printf(
-									/* translators: x */
+									/* translators: function call */
 									esc_html__( 'This is the value returned by %s.', 'updates-api-inspector' ),
 									"<code>get_site_transient( 'update_themes' )</code>"
 								);
@@ -483,29 +494,24 @@ class Plugin {
 					</p>
 					<p>
 							<?php
-								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
-							?>
-					</p>
-					<p>
-							<?php
 								printf(
-									/* translators: 1 x, 2 y, 3 z */
+									/* translators: 1: variable name, 2: variable name, 3: ??? */
 									esc_html__( 'The values of %1$s and %2$s will contain themes that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
 									'<code>response</code>',
 									'<code>no_update</code>',
-									'<strong>arrays</strong>'
+									'<strong>' . esc_html_x( 'arrays', 'PHP data type', 'updates-api-inspector' ) . '</strong>'
 								);
 							?>
 					</p>
 					<div class='notice notice-warning inline'>
 						<p>
 							<?php
-								printf(
-									/* translators: 1 x, 2 y */
-									esc_html__( '%1$s: The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %2$s with information about their theme!', 'updates-api-inspector' ),
-									'<strong>Important</strong>',
-									'<code>no_update</code>'
-								);
+								echo '<strong>' . esc_html( 'Important', 'updates-api-inspector' ) . '</strong>:' .
+									sprintf(
+										/* translators: variable name */
+										esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
+										'<code>no_update</code>'
+									);
 							?>
 						</p>
 					</div>
@@ -514,7 +520,12 @@ class Plugin {
 							break;
 					}
 					?>
-					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print_var_export( var_export( get_site_transient( "update_{$current}" ), true ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export ?></textarea>
+					<p>
+							<?php
+								esc_html_e( 'The fields in this transient are not documented anywhere, so do not take what is displayed here as all-and-only what may ever be returned!!', 'updates-api-inspector' );
+							?>
+					</p>
+					<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( get_site_transient( "update_{$current}" ) ) ); ?></textarea>
 				</fieldset>
 			</fieldset>
 				<?php
@@ -664,18 +675,20 @@ class Plugin {
 	}
 
 	/**
-	 * Pretty print the output of PHP's
-	 * {@link https://www.php.net/manual/en/function.var-export var_export()}.
+	 * Pretty print a variable's value, approximating WPCS.
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $str The string to pretty print.
+	 * @param mixed $variable The variable to be pretty printed.
 	 * @return string
 	 *
 	 * @todo extend the state machine used for indentation to also align '=>' in
 	 *       per WPCS.
 	 */
-	protected function pretty_print_var_export( $str ) {
+	protected function pretty_print( $variable ) {
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+		$str = var_export( $variable, true );
+
 		$str = preg_replace(
 			array(
 				'/=>\s+/',      // this includes newlines and leading whitespace on the next line.
@@ -693,27 +706,32 @@ class Plugin {
 		);
 
 		// Replace leading spaces with tabs using a little state machine.
-		$lines     = array_map( 'rtrim', explode( "\n", $str ) );
-		$num_lines = count( $lines ) - 1;
-		$indent    = 0;
-		$prev_eol  = null;
+		$lines                  = array_map( 'rtrim', explode( "\n", $str ) );
+		$num_lines              = count( $lines ) - 1;
+		$indent                 = 0;
+		$last_char_on_prev_line = null;
+
 		foreach ( $lines as $i => &$line ) {
-			$eol  = substr( $line, -1 );
-			$line = ltrim( $line );
+			$last_char_on_line = substr( $line, -1 );
+			$line              = ltrim( $line );
 
 			// treat the last lines specially.
 			if ( $num_lines === $i ) {
 				break;
 			}
 
-			if ( '(' === $prev_eol ) {
+			if ( '(' === $last_char_on_prev_line ) {
+				// previous line was start of an array or object,
+				// so increase indentation.
 				$indent++;
 			} elseif ( '),' === $line ) {
+				// previous line as the end of an array or object,
+				// so decrease indentation.
 				$indent--;
 			}
 
-			$line     = str_repeat( "\t", $indent ) . $line;
-			$prev_eol = $eol;
+			$line                   = str_repeat( "\t", $indent ) . $line;
+			$last_char_on_prev_line = $last_char_on_line;
 		}
 
 		return implode( "\n", $lines );
