@@ -509,6 +509,7 @@ class Plugin {
 		</section>
 				<?php
 			} else {
+				$transient_as_read = get_site_transient( "update_{$current}" );
 				?>
 		<section id='response'>
 			<h3><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></h3>
@@ -572,21 +573,36 @@ class Plugin {
 						);
 						?>
 			</p>
-			<p>
 						<?php
-						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' ),
-							// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 					case 'plugins':
@@ -604,20 +620,36 @@ class Plugin {
 						);
 						?>
 			</p>
-			<p>
 						<?php
-						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 					case 'themes':
@@ -635,20 +667,36 @@ class Plugin {
 						);
 						?>
 			</p>
-			<p>
 						<?php
-						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-read">' . esc_html( 'Transient Value As Read', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 				}
@@ -699,20 +747,36 @@ class Plugin {
 						);
 						?>
 			</p>
-			<p>
 						<?php
-						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 					case 'plugins':
@@ -742,19 +806,6 @@ class Plugin {
 			<p>
 						<?php
 						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-			<p>
-						<?php
-						printf(
 							/* translators: 1: variable name, 2: variable name, 3: ??? */
 							esc_html__( 'The values of %1$s and %2$s will contain plugins that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
 							'<code>response</code>',
@@ -778,6 +829,35 @@ class Plugin {
 				</p>
 			</div>
 						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 					case 'themes':
@@ -807,19 +887,6 @@ class Plugin {
 			<p>
 						<?php
 						printf(
-							/* translators: 1: link to section in this page, 2: link to code reference, 3: link to code reference */
-							esc_html( 'By comparing this value with that in the %1$s section you can see the differences (if any) between what is injected with %2$s verses what is injected with %3$s.', 'updates-api-inspector' ),
-							'<a href="#transient-set">' . esc_html( 'Transient Value As Set', 'updates-api-inspector' ) . '</a>',
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' )
-						);
-						?>
-			</p>
-			<p>
-						<?php
-						printf(
 							/* translators: 1: variable name, 2: variable name, 3: ??? */
 							esc_html__( 'The values of %1$s and %2$s will contain themes that are externally hosted (if any) and are arrays of %3$s.', 'updates-api-inspector' ),
 							'<code>response</code>',
@@ -843,6 +910,35 @@ class Plugin {
 				</p>
 			</div>
 						<?php
+						// Display an info notice if the transient as set is different from as read.
+						// Must use loose comparison here otherwise PHP could test with they
+						// are the same object.
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						if ( $transient_as_read != $this->transient_as_set ) {
+							?>
+			<div class='notice notice-info inline'>
+				<p>
+							<?php
+							printf(
+								/* translators: link to another section of this page */
+								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+							);
+							echo '&nbsp;&nbsp';
+							printf(
+								/* translators: 1: link to code reference, 2: link to code reference */
+								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' ),
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' )
+							);
+							?>
+				</p>
+			</div>
+							<?php
+						}
 
 						break;
 				}
@@ -853,7 +949,7 @@ class Plugin {
 					?>
 			</p>
 			<form>
-				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( get_site_transient( "update_{$current}" ) ) ); ?></textarea>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $transient_as_read ) ); ?></textarea>
 			</form>
 				<?php
 			}
