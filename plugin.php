@@ -374,9 +374,19 @@ class Plugin {
 		<nav>
 			<ul>
 				<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
+				<?php
+				if ( $this->error ) {
+					?>
+					<li><a href='#error'><?php esc_html_e( 'Error', 'updates-api-inspector' ); ?></a></li>
+					<?php
+				} else {
+					?>
 				<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
 				<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
 				<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
+					<?php
+				}
+				?>
 			</ul>
 		</nav>
 
@@ -464,6 +474,25 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->request ) ); ?></textarea>
 			</form>
+			<nav>
+				<ul>
+					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+					<li><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></li>
+					<?php
+					if ( $this->error ) {
+						?>
+						<li><a href='#request'><?php esc_html_e( 'Error', 'updates-api-inspector' ); ?></a></li>
+						<?php
+					} else {
+						?>
+					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
+						<?php
+					}
+					?>
+				</ul>
+			</nav>
 		</section>
 			<?php
 			if ( $this->error ) {
@@ -476,6 +505,12 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->error ) ); ?></textarea>
 			</form>
+			<nav>
+				<ul>
+					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
+				</ul>
+			</nav>
 		</section>
 				<?php
 			} else {
@@ -513,6 +548,15 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->response ) ); ?></textarea>
 			</form>
+			<nav>
+				<ul>
+					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
+					<li><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></li>
+					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
+				</ul>
+			</nav>
 		</section>
 		<section id='transient-set'>
 			<h3><?php esc_html_e( 'Transient Value As Set', 'updates-api-inspector' ); ?></h3>
@@ -622,6 +666,15 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->transient_as_set ) ); ?></textarea>
 			</form>
+			<nav>
+				<ul>
+					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
+					<li><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></li>
+					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
+				</ul>
+			</nav>
 		</section>
 		<section id='transient-read'>
 			<h3><?php esc_html_e( 'Transient Value As Read', 'updates-api-inspector' ); ?></h3>
@@ -810,6 +863,15 @@ class Plugin {
 				<?php
 			}
 			?>
+			<nav>
+				<ul>
+					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
+					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
+					<li><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></li>
+				</ul>
+			</nav>
 		</section>
 	</div>
 			<?php
@@ -863,11 +925,19 @@ class Plugin {
 		?>
 <style id='updates-api-inspector'>
 	/* make room for the admin bar when the jump links are used. */
-	/* note that request is not here... */
+	#request,
 	#response,
 	#transient-set,
 	#transient-read {
 		padding-top: 32px;
+	}
+
+	.updates-api-inspector section nav {
+		float: right;
+	}
+
+	.rtl .updates-api-inspector section nav {
+		float: left;
 	}
 
 	.updates-api-inspector nav li {
