@@ -131,7 +131,7 @@ class Plugin {
 	 */
 	public function maybe_do_update_check() {
 		// just in case the user has bypassed the caps check for the menu item.
-		if ( ! current_user_can( is_multisite() ? 'manage_network' : 'manage_options' ) ) {
+		if ( ! current_user_can( is_multisite() ? 'manage_network_options' : 'manage_options' ) ) {
 			wp_die( esc_html__( 'Sorry, you are not allowed to inspect the Updates API.', 'updates-api-inspector' ) );
 		}
 
@@ -316,7 +316,7 @@ class Plugin {
 	 *       I hate it!
 	 */
 	public function render_tools_page() {
-		if ( ! current_user_can( is_multisite() ? 'manage_network' : 'manage_options' ) ) {
+		if ( ! current_user_can( is_multisite() ? 'manage_network_options' : 'manage_options' ) ) {
 			// this won't produce a "normal" WP die screen (it's too late for that),
 			// but it's better than letting the user see the inspection.
 			// @see Plugin::maybe_do_update_check().
@@ -1056,7 +1056,7 @@ class Plugin {
 	public function admin_menu() {
 		if ( ! is_multisite() ) {
 			add_management_page(
-				_x( 'Updates API Inspector', 'Menu title', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Page title', 'updates-api-inspector' ),
 				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
 				'manage_options',
 				'updates-api-inspector',
@@ -1064,7 +1064,7 @@ class Plugin {
 			);
 		} else {
 			add_menu_page(
-				_x( 'Updates API Inspector', 'Menu title', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Page title', 'updates-api-inspector' ),
 				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
 				'manage_network_options',
 				'updates-api-inspector',
