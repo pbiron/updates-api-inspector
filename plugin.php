@@ -1051,16 +1051,16 @@ class Plugin {
 
 		if ( ! is_multisite() ) {
 			add_management_page(
-				esc_html__( 'Updates API Inspector', 'updates-api-inspector' ),
-				esc_html_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
 				$capability,
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' )
 			);
 		} else {
 			add_menu_page(
-				esc_html__( 'Updates API Inspector', 'updates-api-inspector' ),
-				esc_html_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
 				$capability,
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' ),
