@@ -100,10 +100,17 @@ class Plugin {
 	 * @return void
 	 */
 	protected function add_hooks() {
-		add_action( is_multisite() ? 'network_admin_menu' : 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
-		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
-		add_action( is_multisite() ? 'admin_print_styles-toplevel_page_updates-api-inspector' : 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
+		if ( ! is_multisite() ) {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
+			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
+			add_action( 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
+		} else {
+			add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
+			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'add_help' ) );
+			add_action( 'admin_print_styles-toplevel_page_updates-api-inspector', array( $this, 'print_styles' ) );
+		}
 
 		return;
 	}
