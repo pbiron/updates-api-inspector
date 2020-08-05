@@ -164,47 +164,37 @@ class Plugin {
 			set_site_transient( $transient_name, $current );
 		}
 
-		// add our capture hook.
+		// add our capture hooks.
 		// priority is as late as possible, so that we capture any modifications made by
 		// by anything else hooking into the various Requests hooks.
-		add_action( 'http_api_debug', array( $this, 'capture' ), PHP_INT_MAX, 5 );
+		add_action( 'http_api_debug', array( $this, 'capture_request_response' ), PHP_INT_MAX, 5 );
+		add_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 		// Query the API.
 		switch ( $type ) {
 			case 'core':
-				add_action( 'set_site_transient_update_core', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
-
 				wp_version_check( array(), true );
-
-				remove_action( 'set_site_transient_update_core', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 			case 'plugins':
-				add_action( 'set_site_transient_update_plugins', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
-
 				wp_update_plugins();
-
-				remove_action( 'set_site_transient_update_plugins', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 			case 'themes':
-				add_action( 'set_site_transient_update_themes', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
-
 				wp_update_themes();
-
-				remove_action( 'set_site_transient_update_themes', array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 				break;
 		}
 
-		// unhook our capture callback.
-		remove_action( 'http_api_debug', array( $this, 'capture' ) );
+		// remove our capture hooks.
+		remove_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
+		remove_action( 'http_api_debug', array( $this, 'capture_request_response' ) );
 
 		return;
 	}
 
 	/**
-	 * Capture the request and response.
+	 * Capture the API request and response.
 	 *
 	 * For the request, we only capture query args and `$options` explicitly passed
 	 * to {@link https://developer.wordpress.org/reference/functions/wp_remote_post/ wp_remote_post()}.
@@ -220,7 +210,7 @@ class Plugin {
 	 *
 	 * @action http_api_debug
 	 */
-	public function capture( $response, $context, $class, $parsed_args, $url ) {
+	public function capture_request_response( $response, $context, $class, $parsed_args, $url ) {
 		// Even though this method is hooked/unhooked right around the core functions
 		// that access the API, we check the URL just to be sure that we don't
 		// capture incorrect info should something do additional wp_remote_xxx() calls
