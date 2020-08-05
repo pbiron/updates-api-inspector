@@ -1041,7 +1041,7 @@ class Plugin {
 			add_management_page(
 				__( 'Updates API Inspector', 'updates-api-inspector' ),
 				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				is_multisite() ? 'manage_network' : 'manage_options',
+				'manage_options',
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' )
 			);
@@ -1049,7 +1049,7 @@ class Plugin {
 			$hook = add_menu_page(
 				__( 'Updates API Inspector', 'updates-api-inspector' ),
 				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				is_multisite() ? 'manage_network' : 'manage_options',
+				'manage_network',
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' ),
 				'dashicons-update'
