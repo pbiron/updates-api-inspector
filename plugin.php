@@ -1074,6 +1074,13 @@ class Plugin {
 		width: 95%;
 	}
 
+	@media screen and (max-width: 782px) {
+		.updates-api-inspector textarea {
+			-moz-tab-size: 2;
+			tab-size: 2;
+		}
+	}
+
 	.updates-api-inspector textarea[readonly] {
 		background-color: #fff; /* override WP's forms.css, which uses #eee for textarea[readonly] */
 		direction: ltr;
