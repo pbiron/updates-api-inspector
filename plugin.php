@@ -141,10 +141,15 @@ class Plugin {
 			check_admin_referer( 'updates-api-inspector' );
 
 			if ( ! in_array( $type, array( 'core', 'plugins', 'themes' ), true ) ) {
-				/* translators: Updates API endpoint. */
-				$message = sprintf( __( 'Updates API Inspector: Unknown update type: %s', 'updates-api-inspector' ), $type );
-
-				wp_die( esc_html( $message ), esc_html__( 'Something went wrong.', 'updates-api-inspector' ), 403 );
+				wp_die(
+					esc_html(
+						sprintf(
+							/* translators: Updates API endpoint. */
+							__( 'Unknown Updates API Inspector type: %s', 'updates-api-inspector' ),
+							$type
+						)
+					)
+				);
 			}
 
 			$this->update_check( $type );
