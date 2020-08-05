@@ -1054,21 +1054,19 @@ class Plugin {
 	 * @todo find a better cap.
 	 */
 	public function admin_menu() {
-		$capability = is_multisite() ? 'manage_network_options' : 'manage_options';
-
 		if ( ! is_multisite() ) {
 			add_management_page(
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Menu title', 'updates-api-inspector' ),
 				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
-				$capability,
+				'manage_options',
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' )
 			);
 		} else {
 			add_menu_page(
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				_x( 'Updates API Inspector', 'Menu title', 'updates-api-inspector' ),
 				_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
-				$capability,
+				'manage_network_options',
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' ),
 				'dashicons-update'
