@@ -76,6 +76,14 @@ Many considerations go into deciding which hook to use and I couldn't possibly g
 
 It should!  My main motivation for releasing it _now_ is to help developers of externally hosted plugins/themes prepare for the release of 5.5.0, this plugin should work just fine with previous versions (although I have only tested it with 5.5.0).
 
+= Does this plugin work in multisite? =
+
+Yes it does!
+
+In non-multisite, the Updates API Inspector menu item appers in `Tools`.
+
+In multisite, this plugin can only be network activated (since that's where updates happen) and the menu item appears at the top-level of `Network Admin`.
+
 = Can I contribute to this plugin? =
 
 Yes you can!  Development happens on [GitHub](https://github.com/pbiron/updates-api-inspector).  If you find a bug or have other suggestions, please open an issue there.  Pull requests accepted.

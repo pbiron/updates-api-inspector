@@ -6,6 +6,7 @@
  * Author URI: https://sparrowhawkcomputing.com/
  * Plugin URI: https://github.com/pbiron/updates-api-inspector
  * GitHub Plugin URI: https://github.com/pbiron/updates-api-inspector
+ * Network: true
  * Version: 0.1.1
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -99,10 +100,17 @@ class Plugin {
 	 * @return void
 	 */
 	protected function add_hooks() {
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
-		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
-		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
+		if ( ! is_multisite() ) {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
+			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
+			add_action( 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
+		} else {
+			add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
+			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'add_help' ) );
+			add_action( 'admin_print_styles-toplevel_page_updates-api-inspector', array( $this, 'print_styles' ) );
+		}
 
 		return;
 	}
@@ -1029,13 +1037,24 @@ class Plugin {
 	 * @todo find a better cap.
 	 */
 	public function admin_menu() {
-		add_management_page(
-			__( 'Updates API Inspector', 'updates-api-inspector' ),
-			__( 'Updates API', 'updates-api-inspector' ),
-			is_multisite() ? 'manage_network' : 'manage_options',
-			'updates-api-inspector',
-			array( $this, 'render_tools_page' )
-		);
+		if ( ! is_multisite() ) {
+			add_management_page(
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				is_multisite() ? 'manage_network' : 'manage_options',
+				'updates-api-inspector',
+				array( $this, 'render_tools_page' )
+			);
+		} else {
+			$hook = add_menu_page(
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				__( 'Updates API Inspector', 'updates-api-inspector' ),
+				is_multisite() ? 'manage_network' : 'manage_options',
+				'updates-api-inspector',
+				array( $this, 'render_tools_page' ),
+				'dashicons-update'
+			);
+		}
 
 		return;
 	}
