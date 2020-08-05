@@ -100,17 +100,10 @@ class Plugin {
 	 * @return void
 	 */
 	protected function add_hooks() {
-		if ( ! is_multisite() ) {
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
-			add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
-			add_action( 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
-		} else {
-			add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
-			add_action( 'load-toplevel_page_updates-api-inspector', array( $this, 'add_help' ) );
-			add_action( 'admin_print_styles-toplevel_page_updates-api-inspector', array( $this, 'print_styles' ) );
-		}
+		add_action( is_multisite() ? 'network_admin_menu' : 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'maybe_do_update_check' ) );
+		add_action( 'load-tools_page_updates-api-inspector', array( $this, 'add_help' ) );
+		add_action( is_multisite() ? 'admin_print_styles-toplevel_page_updates-api-inspector' : 'admin_print_styles-tools_page_updates-api-inspector', array( $this, 'print_styles' ) );
 
 		return;
 	}
@@ -1054,19 +1047,21 @@ class Plugin {
 	 * @todo find a better cap.
 	 */
 	public function admin_menu() {
+		$capability = is_multisite() ? 'manage_network_options' : 'manage_options';
+
 		if ( ! is_multisite() ) {
 			add_management_page(
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				'manage_options',
+				esc_html__( 'Updates API Inspector', 'updates-api-inspector' ),
+				esc_html_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
+				$capability,
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' )
 			);
 		} else {
-			$hook = add_menu_page(
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				__( 'Updates API Inspector', 'updates-api-inspector' ),
-				'manage_network',
+			add_menu_page(
+				esc_html__( 'Updates API Inspector', 'updates-api-inspector' ),
+				esc_html_x( 'Updates API Inspector', 'Menu item', 'updates-api-inspector' ),
+				$capability,
 				'updates-api-inspector',
 				array( $this, 'render_tools_page' ),
 				'dashicons-update'
