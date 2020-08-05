@@ -625,7 +625,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_core</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
@@ -677,7 +677,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_plugins</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
@@ -729,7 +729,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_themes</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
@@ -814,7 +814,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_core</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
@@ -871,7 +871,7 @@ class Plugin {
 			<div class='notice notice-warning inline'>
 				<p>
 						<?php
-						echo '<strong>' . esc_html( 'Important', 'updates-api-inspector' ) . '</strong>:' .
+						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:' .
 							sprintf(
 								/* translators: variable name */
 								esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
@@ -900,7 +900,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_plugins</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
@@ -957,7 +957,7 @@ class Plugin {
 			<div class='notice notice-warning inline'>
 				<p>
 						<?php
-						echo '<strong>' . esc_html( 'Important', 'updates-api-inspector' ) . '</strong>:' .
+						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:' .
 							sprintf(
 								/* translators: variable name */
 								esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their theme!', 'updates-api-inspector' ),
@@ -986,7 +986,7 @@ class Plugin {
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
-								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
+								esc_html__( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
 								sprintf(
 									'<a href="%s">site_transient_update_themes</a>',
 									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
