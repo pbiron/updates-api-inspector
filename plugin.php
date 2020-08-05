@@ -620,7 +620,7 @@ class Plugin {
 					?>
 			</p>
 			<form>
-				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( get_site_transient( "update_{$current}" ) ) ); ?></textarea>
+				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->transient_as_set ) ); ?></textarea>
 			</form>
 		</section>
 		<section id='transient-read'>
