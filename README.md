@@ -1,17 +1,17 @@
-=== Updates API Inspector ===
+# Updates API Inspector #
 
-Contributors: pbiron
-Tags: updates-api
-Requires at least: 4.6
-Tested up to: 5.5.0
-Stable tag: 0.1.1
-License: GPL-2.0-or-later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z6D97FA595WSU
+**Contributors:** [pbiron](https://profiles.wordpress.org/pbiron)  
+**Tags:** updates-api  
+**Requires at least:** 4.6  
+**Tested up to:** 5.5.0  
+**Stable tag:** 0.1.1
+**License:** GPL-2.0-or-later  
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z6D97FA595WSU  
 
 Inspect various aspects of the WordPress Updates API
 
-== Description ==
+## Description ##
 
 The WordPress Updates API is pretty much a mystery to many developers for many reasons, not least of which is the fact that there is *no documentation* for it.
 
@@ -36,7 +36,7 @@ My hope is that by providing an easy way for developers to inspect the API queri
 
 In future versions, I plan to add many other features, as well as more extensive on-screen help of an "educational" nature.
 
-== Installation ==
+## Installation ##
 
 From your WordPress dashboard
 
@@ -45,21 +45,31 @@ From your WordPress dashboard
 3. Activate the plugin
 
 
-== Screenshots ==
+## Screenshots ##
 
-1. The `Request` for plugin updates
-2. The `API Response` for plugin updates
-3. The `Transient Value as Set` for plugin updates
-4. The `Transient Value as Read` for plugin updates
-5. Multisite
+### 1. The `Request` for plugin updates ###
+![The `Request` for plugin updates](assets/images/screenshot-1.png?raw=true)
 
-== Frequently Asked Questions ==
+### 2. The `API Response` for plugin updates ###
+![The `API Response` for plugin updates](assets/images/screenshot-2.png?raw=true)
 
-= Why isn't the Updates API documented? =
+### 3. The `Transient Value as Set` for plugin updates ###
+![The `Transient Value as Set` for plugin updates](assets/images/screenshot-3.png?raw=true)
+
+### 4. The `Transient Value as Read` for plugin updates ###
+![The `Transient Value as Read` for plugin updates](assets/images/screenshot-4.png?raw=true)
+
+### 5. Multisite ###
+![Multisite](assets/images/screenshot-5.png?raw=true)
+
+
+## Frequently Asked Questions ##
+
+### Why isn't the Updates API documented? ###
 
 That's a good question, and I honestly don't know the answer.
 
-= What's the best hook to use for injecting information about by externally hosted plugin or theme into the site transients? =
+### What's the best hook to use for injecting information about by externally hosted plugin or theme into the site transients? ###
 
 There is no *best hook*!  
 
@@ -76,11 +86,11 @@ A number of other hooks can be used, but except in *very special** cases I would
 
 Many considerations go into deciding which hook to use and I couldn't possibly give those considerations their due here...so I won't even try.
 
-= Will this plugin work in versions of WordPress prior to 5.5.0? =
+### Will this plugin work in versions of WordPress prior to 5.5.0? ###
 
 It should!  My main motivation for releasing it _now_ is to help developers of externally hosted plugins/themes prepare for the release of 5.5.0, this plugin should work just fine with previous versions (although I have only tested it with 5.5.0).
 
-= Does this plugin work in multisite? =
+### Does this plugin work in multisite? ###
 
 Yes it does!
 
@@ -88,17 +98,17 @@ In non-multisite, the Updates API Inspector menu item appers in `Tools`.
 
 In multisite, this plugin can only be network activated (since that's where updates happen) and the menu item appears at the top-level of `Network Admin`.
 
-= Can I contribute to this plugin? =
+### Can I contribute to this plugin? ###
 
 Yes you can!  Development happens on [GitHub](https://github.com/pbiron/updates-api-inspector).  If you find a bug or have other suggestions, please open an issue there.  Pull requests accepted.
 
-== Changelog ==
+## Changelog ##
 
-= 0.1.1 =
+### 0.1.1 ###
 
 * Scrap the use of AJAX: run the update check before the tool page is rendered and output just what we need to.
 * Also adds a minimal help screen and other various code/string cleanup.
 
-= 0.1.0 =
+### 0.1.0 ###
 
 * init commit.
