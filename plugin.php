@@ -1023,6 +1023,16 @@ class Plugin {
 		padding-top: 32px;
 	}
 
+	@media screen and (max-width: 782px) {
+		/* make room for the admin bar when the jump links are used. */
+		#request,
+		#response,
+		#transient-set,
+		#transient-read {
+			padding-top: 46px;
+		}
+	}
+
 	.updates-api-inspector section nav {
 		float: right;
 	}
