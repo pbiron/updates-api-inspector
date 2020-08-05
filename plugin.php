@@ -401,8 +401,10 @@ class Plugin {
 						'<code>$options</code>',
 						"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
 						// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
+						sprintf(
+							'<a href="%s">wp_version_check()</a>',
+							esc_url( __( 'https://developer.wordpress.org/reference/functions/wp_version_check/', 'updates-api-inspector' ) )
+						)
 					);
 					?>
 			</p>
@@ -430,8 +432,10 @@ class Plugin {
 						'<code>$options</code>',
 						"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
 						// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+						sprintf(
+							'<a href="%s">wp_update_plugins()</a>',
+							esc_url( __( 'https://developer.wordpress.org/reference/functions/wp_update_plugins/', 'updates-api-inspector' ) )
+						)
 					);
 					?>
 			</p>
@@ -448,8 +452,10 @@ class Plugin {
 						'<code>$options</code>',
 						"<code>wp_remote_post( '" . esc_html( $this->url ) . "', \$options )</code>",
 						// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
+						sprintf(
+							'<a href="%s">wp_update_themes()</a>',
+							esc_url( __( 'https://developer.wordpress.org/reference/functions/wp_update_themes/', 'updates-api-inspector' ) )
+						)
 					);
 					?>
 			</p>
@@ -569,8 +575,10 @@ class Plugin {
 							'<code>$updates</code>',
 							"<code>set_site_transient( 'update_core', \$updates )</code>",
 							// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/functions/wp_version_check">wp_version_check()</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">wp_version_check()</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/functions/wp_version_check/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -587,17 +595,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+								'<a href="#transient-read">' . esc_html__( 'Transient Value as Read', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_core</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_core</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
@@ -616,8 +627,10 @@ class Plugin {
 							'<code>$new_option</code>',
 							"<code>set_site_transient( 'update_plugins', \$new_option )</code>",
 							// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_plugins">wp_update_plugins()</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">wp_update_plugins()</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/functions/wp_update_plugins/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -634,17 +647,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+								'<a href="#transient-read">' . esc_html__( 'Transient Value as Read', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_plugins</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_plugins</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
@@ -663,8 +679,10 @@ class Plugin {
 							'<code>$new_option</code>',
 							"<code>set_site_transient( 'update_themes', \$new_option )</code>",
 							// @todo in RTL, the '()' part of the link text appears at the other end of the line.  I don't know why.
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/functions/wp_update_themes">wp_update_themes()</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">wp_update_themes()</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/hooks/wp_update_themes/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -681,17 +699,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-read">Transient Value as Read</a>', 'updates-api-inspector' )
+								'<a href="#transient-read">' . esc_html__( 'Transient Value as Read', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_themes</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_themes</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
@@ -743,8 +764,10 @@ class Plugin {
 						printf(
 							/* translators: link to code reference */
 							esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent core from auto-updating.', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_core">auto_update_core</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">auto_update_core</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/hooks/auto_update_core/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -761,17 +784,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+								'<a href="#transient-set">' . esc_html__( 'Transient Value as Set', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_core</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_core</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_core</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_core</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
@@ -799,8 +825,10 @@ class Plugin {
 						printf(
 							/* translators: link to code reference */
 							esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent the plugin from auto-updating.', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_type">auto_update_plugin</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">auto_update_plugin</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/hooks/auto_update_type/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -842,17 +870,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+								'<a href="#transient-set">' . esc_html__( 'Transient Value as Set', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_plugins</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_plugins</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_plugins</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_plugins</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
@@ -880,8 +911,10 @@ class Plugin {
 						printf(
 							/* translators: link to code reference */
 							esc_html__( 'For auto-updates, the %s filter is applied and a falsey return value will prevent the theme from auto-updating.', 'updates-api-inspector' ),
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							__( '<a href="https://developer.wordpress.org/reference/hooks/auto_update_type">auto_update_theme</a>', 'updates-api-inspector' )
+							sprintf(
+								'<a href="%s">auto_update_theme</a>',
+								esc_url( __( 'https://developer.wordpress.org/reference/hooks/auto_update_type/', 'updates-api-inspector' ) )
+							)
 						);
 						?>
 			</p>
@@ -923,17 +956,20 @@ class Plugin {
 							printf(
 								/* translators: link to another section of this page */
 								esc_html__( 'The transient value here is different than it\'s value in %s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="#transient-set">Transient Value as Set</a>', 'updates-api-inspector' )
+								'<a href="#transient-set">' . esc_html__( 'Transient Value as Set', 'updates-api-inspector' ) . '</a>'
 							);
 							echo '&nbsp;&nbsp';
 							printf(
 								/* translators: 1: link to code reference, 2: link to code reference */
 								esc_html( 'There are a number of different ways this could happen, but it often is the result of something hooking into %1$s rather that %2$s.', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/set_site_transient_transient">site_transient_update_themes</a>', 'updates-api-inspector' ),
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								__( '<a href="https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient">pre_set_site_transient_update_themes</a>', 'updates-api-inspector' )
+								sprintf(
+									'<a href="%s">site_transient_update_themes</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/set_site_transient_transient/', 'updates-api-inspector' ) )
+								),
+								sprintf(
+									'<a href="%s">pre_set_site_transient_update_themes</a>',
+									esc_url( __( 'https://developer.wordpress.org/reference/hooks/pre_set_site_transient_transient/', 'updates-api-inspector' ) )
+								)
 							);
 							?>
 				</p>
