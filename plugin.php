@@ -130,6 +130,11 @@ class Plugin {
 	 * @action load-tools_page_updates-api-inspector
 	 */
 	public function maybe_do_update_check() {
+		// just in case the user has bypassed the caps check for the menu item.
+		if ( ! current_user_can( is_multisite() ? 'manage_network' : 'manage_options' ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to inspect the Updates API.', 'updates-api-inspector' ) );
+		}
+
 		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		$type = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
 		if ( $type ) {
@@ -306,6 +311,13 @@ class Plugin {
 	 *       I hate it!
 	 */
 	public function render_tools_page() {
+		if ( ! current_user_can( is_multisite() ? 'manage_network' : 'manage_options' ) ) {
+			// this won't produce a "normal" WP die screen (it's too late for that),
+			// but it's better than letting the user see the inspection.
+			// @see Plugin::maybe_do_update_check().
+			wp_die( esc_html__( 'Sorry, you are not allowed to inspect the Updates API.', 'updates-api-inspector' ) );
+		}
+
 		$checks = array(
 			'core'    => __( 'Core', 'updates-api-inspector' ),
 			'plugins' => __( 'Plugins', 'updates-api-inspector' ),
