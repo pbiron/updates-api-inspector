@@ -315,7 +315,7 @@ class Plugin {
 <div class='wrap updates-api-inspector'>
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-	<p><?php esc_html_e( 'This tool will allow you to inspect requests/responses from the Updates API.', 'updates-api-inspector' ); ?></p>
+	<p><?php esc_html_e( 'This tool will allow you to inspect requests/responses from the Updates API and the site transients core sets as a result.', 'updates-api-inspector' ); ?></p>
 
 	<nav role='tablist' class='nav-tab-wrapper wp-clearfix'>
 		<?php
