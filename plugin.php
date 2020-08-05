@@ -305,6 +305,11 @@ class Plugin {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		$current = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : '';
+		if ( $current ) {
+			// The nonce check should aready have happened in {@see Plugin::maybe_do_update_check()}
+			// but it doesn't help to check it again, just to be sure.
+			check_admin_referer( 'updates-api-inspector' );
+		}
 		?>
 
 <div class='wrap updates-api-inspector'>
