@@ -1274,7 +1274,7 @@ class Plugin {
 
 				$array_stack[ $indent ][] = $i;
 			} elseif ( '),' === $line || ')' === $line ) {
-				// end of an arrary or object.
+				// end of an array or object.
 				// align '=>' based on the longest key in the array/object.
 				// first, find the max length of keys.
 				$max_length = 0;
