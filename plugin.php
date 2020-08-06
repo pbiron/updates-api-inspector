@@ -1242,12 +1242,12 @@ class Plugin {
 
 		$str = preg_replace(
 			array(
-				'/=>\s+/',      // this includes newlines and leading whitespace on the next line.
-				'/array\s+\(/', // for some arrays, var_export() adds the extra whitespace, others it doesn't.
-				'/\d+ =>\s+/',  // strip numeric indexes from arrays.
-				'/\(\s+\)/',    // ensure empty arrays appear on 1 line.
-				'/\(array\(/',  // Ensure opening parenthesis of a multi-line function call is the last content on the line.
-				'/\)\)/',       // Ensure closing parenthesis of a multi-line function call is the last content on the line.
+				'/=>\s+/',      // This includes newlines and leading whitespace on the next line.
+				'/array\s+\(/', // For some arrays, var_export() adds the extra whitespace, others it doesn't.
+				'/\d+ =>\s+/',  // Strip numeric indexes from arrays.
+				'/\(\s+\)/',    // Ensure empty arrays appear on 1 line.
+				'/\(array\(/',  // Ensure opening parenthesis of a multi-line function call is the last content on the line as in WPCS.
+				'/\)\)/',       // Ensure closing parenthesis of a multi-line function call is the last content on the line as in WPCS.
 			),
 			array(
 				'=> ',
