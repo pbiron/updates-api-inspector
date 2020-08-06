@@ -190,7 +190,7 @@ class Plugin {
 		add_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
 		// make sure another plugin isn't short circuiting the filter.
-		add_filter( 'pre_http_request', array( $this, 'pre_http_request_modify' ), 10, 3 );
+		add_filter( 'pre_http_request', array( $this, 'capture_pre_http_request' ), 10, 3 );
 
 		// Query the API.
 		switch ( $type ) {
@@ -211,7 +211,7 @@ class Plugin {
 		// remove our capture hooks.
 		remove_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 		remove_action( 'http_api_debug', array( $this, 'capture_request_response' ) );
-		remove_filter( 'pre_http_request', array( $this, 'pre_http_request_modify' ) );
+		remove_filter( 'pre_http_request', array( $this, 'capture_pre_http_request' ) );
 
 		return;
 	}
@@ -227,8 +227,11 @@ class Plugin {
 	 *
 	 * @return bool
 	 */
-	public function pre_http_request_modify( $result, $args, $url ) {
-		$result = true === $result ? false : $result;
+	public function capture_pre_http_request( $result, $args, $url ) {
+		if ( $result ) {
+			$this->capture_request_response( $response, 'request', 'Request', $args, $url );
+		}
+
 		return $result;
 	}
 
