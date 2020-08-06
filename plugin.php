@@ -1,4 +1,4 @@
-<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
+<?php
 /**
  * Plugin Name: Updates API Inspector
  * Description: Inspect various aspects of the Updates API.
