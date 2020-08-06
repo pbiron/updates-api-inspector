@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="Updates API Inspector">
+    <description>Ruleset for Updates API Inspector.</description>
+
+    <!-- Show progress and sniff codes in all reports -->
+    <arg value="ps"/>
+
+    <!-- Exclude these -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+
+    <rule ref="WordPress-Core"></rule>
+
+    <rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName" />
+        <exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
+    </rule>
+
+    <!-- Enforce space before closing parenthesis -->
+    <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingBeforeClose">
+        <severity>5</severity>
+    </rule>
+
+    <!-- Silence certain rules -->
+    <rule ref="Squiz.PHP.DisallowBooleanStatement.Found">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.PHP.DisallowInlineIf.Found">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.PHP.DisallowComparisonAssignment.AssignedComparison">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Paul's preference ;) -->
+    <rule ref="Squiz.PHP">
+        <exclude name="Squiz.PHP.NonExecutableCode.ReturnNotRequired"/>
+    </rule>
+</ruleset>
