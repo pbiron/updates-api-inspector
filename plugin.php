@@ -878,7 +878,7 @@ class Plugin {
 								'<code>no_update</code>'
 							);
 							echo '&nbsp;&nbsp;';
-							esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
+							esc_html_e( 'For more information, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 						?>
 				</p>
 			</div>
@@ -964,7 +964,7 @@ class Plugin {
 								'<code>no_update</code>'
 							);
 						echo '&nbsp;&nbsp;';
-						esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
+						esc_html_e( 'For more information, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 						?>
 				</p>
 			</div>
