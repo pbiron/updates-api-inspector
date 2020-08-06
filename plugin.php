@@ -440,7 +440,7 @@ class Plugin {
 						esc_html__( '%1$s is transmitted as part of the query string (the part after %2$s in the URL) but is displayed as part of %3$s here to make the output easier to read.', 'updates-api-inspector' ),
 						'<code>query_string</code>',
 						'<code>?</code>',
-						'<code>$options</code>',
+						'<code>$options</code>'
 					);
 					?>
 			</p>
