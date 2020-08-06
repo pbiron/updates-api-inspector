@@ -4,7 +4,7 @@
  * Description: Inspect various aspects of the Updates API.
  * Author: Paul V. Biron/Sparrow Hawk Computing
  * Author URI: https://sparrowhawkcomputing.com/
- * Plugin URI: https://github.com/pbiron/updates-api-inspector
+ * Plugin URI: https://wordpress.org/plugins/updates-api-inspector/
  * GitHub Plugin URI: https://github.com/pbiron/updates-api-inspector
  * Network: true
  * Version: 0.1.1
