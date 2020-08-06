@@ -1,6 +1,6 @@
 === Updates API Inspector ===
 
-Contributors: pbiron
+Contributors: pbiron, afragen
 Tags: updates-api
 Requires at least: 4.6
 Tested up to: 5.5.0
