@@ -5,6 +5,10 @@
     <!-- Show progress and sniff codes in all reports -->
     <arg value="ps"/>
 
+    <!-- Exclude these -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+
     <rule ref="WordPress-Core"></rule>
 
     <rule ref="WordPress">
