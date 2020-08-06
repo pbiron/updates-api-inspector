@@ -229,7 +229,10 @@ class Plugin {
 	 */
 	public function capture_pre_http_request( $result, $args, $url ) {
 		if ( $result ) {
-			$this->capture_request_response( $response, 'request', 'Request', $args, $url );
+			$this->capture_request_response( $result, 'request', 'Request', $args, $url );
+			if ( true === $result ) {
+				return new \WP_Error( 'short-circuit', 'Some developer incorrectly hooked into `pre_http_request` returning true.' );
+			}
 		}
 
 		return $result;
