@@ -217,7 +217,7 @@ class Plugin {
 	}
 
 	/**
-	 * Fix for plugin's that bypass HTTP requests.
+	 * Fix for plugins that bypass HTTP requests.
 	 *
 	 * @uses 'pre_http_request' filter.
 	 *
