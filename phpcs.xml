@@ -11,7 +11,6 @@
     </rule>
     <rule ref="WordPress">
         <!-- <exclude name="WordPress.Files.FileName" /> -->
-        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.NamingConventions.ValidVariableName" />
         <exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
