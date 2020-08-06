@@ -871,7 +871,7 @@ class Plugin {
 			<div class='notice notice-warning inline'>
 				<p>
 						<?php
-						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:&nbsp;' .
+						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:' .
 							sprintf(
 								/* translators: variable name */
 								esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
@@ -957,7 +957,7 @@ class Plugin {
 			<div class='notice notice-warning inline'>
 				<p>
 						<?php
-						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:&nbsp;' .
+						echo '<strong>' . esc_html__( 'Important', 'updates-api-inspector' ) . '</strong>:' .
 							sprintf(
 								/* translators: variable name */
 								esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted themes that do not populate %s with information about their theme!', 'updates-api-inspector' ),
