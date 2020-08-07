@@ -392,24 +392,7 @@ class Plugin {
 					break;
 			}
 			?>
-		<nav>
-			<ul>
-				<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
-				<?php
-				if ( $this->error ) {
-					?>
-					<li><a href='#error'><?php esc_html_e( 'Error', 'updates-api-inspector' ); ?></a></li>
-					<?php
-				} else {
-					?>
-				<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
-				<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
-				<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
-					<?php
-				}
-				?>
-			</ul>
-		</nav>
+			<?php $this->jump_links( 'top' ); ?>
 
 		<section id='request'>
 			<h3><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></h3>
@@ -501,25 +484,7 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->request ) ); ?></textarea>
 			</form>
-			<nav>
-				<ul>
-					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
-					<li><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></li>
-					<?php
-					if ( $this->error ) {
-						?>
-						<li><a href='#request'><?php esc_html_e( 'Error', 'updates-api-inspector' ); ?></a></li>
-						<?php
-					} else {
-						?>
-					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
-						<?php
-					}
-					?>
-				</ul>
-			</nav>
+			<?php $this->jump_links( 'request' ); ?>
 		</section>
 			<?php
 			if ( $this->error ) {
@@ -532,12 +497,7 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->error ) ); ?></textarea>
 			</form>
-			<nav>
-				<ul>
-					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
-				</ul>
-			</nav>
+				<?php $this->jump_links( 'error' ); ?>
 		</section>
 				<?php
 			} else {
@@ -576,15 +536,7 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->response ) ); ?></textarea>
 			</form>
-			<nav>
-				<ul>
-					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
-					<li><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></li>
-					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
-				</ul>
-			</nav>
+				<?php $this->jump_links( 'response' ); ?>
 		</section>
 		<section id='transient-set'>
 			<h3><?php esc_html_e( 'Transient Value As Set', 'updates-api-inspector' ); ?></h3>
@@ -756,15 +708,7 @@ class Plugin {
 			<form>
 				<textarea rows='25' readonly><?php echo esc_html( $this->pretty_print( $this->transient_as_set ) ); ?></textarea>
 			</form>
-			<nav>
-				<ul>
-					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
-					<li><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></li>
-					<li><a href='#transient-read'><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></a></li>
-				</ul>
-			</nav>
+				<?php $this->jump_links( 'transient-set' ); ?>
 		</section>
 		<section id='transient-read'>
 			<h3><?php esc_html_e( 'Transient Value As Read', 'updates-api-inspector' ); ?></h3>
@@ -1016,15 +960,7 @@ class Plugin {
 				<?php
 			}
 			?>
-			<nav>
-				<ul>
-					<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#request'><?php esc_html_e( 'Request', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#response'><?php esc_html_e( 'API Response', 'updates-api-inspector' ); ?></a></li>
-					<li><a href='#transient-set'><?php esc_html_e( 'Transient Value as Set', 'updates-api-inspector' ); ?></a></li>
-					<li><?php esc_html_e( 'Transient Value as Read', 'updates-api-inspector' ); ?></li>
-				</ul>
-			</nav>
+			<?php $this->jump_links( 'transient-read' ); ?>
 		</section>
 	</div>
 			<?php
@@ -1305,6 +1241,60 @@ class Plugin {
 		}
 
 		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Output jump links.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param string $section The section the jump links are in.
+	 *                        Accepts 'top', 'request', 'response', 'transient-set',
+	 *                        'transient-read' and 'error'.  The 'top' "section" is the
+	 *                        top of the page.
+	 * @return void
+	 */
+	protected function jump_links( $section ) {
+		$links = array(
+			'request'        => __( 'Request', 'updates-api-inspector' ),
+			'response'       => __( 'API Response', 'updates-api-inspector' ),
+			'transient-set'  => __( 'Transient Value as Set', 'updates-api-inspector' ),
+			'transient-read' => __( 'Transient Value as Read', 'updates-api-inspector' ),
+		);
+		if ( $this->error ) {
+			// the request generates an error response, we don't
+			// show the these sections.
+			unset( $links['response'], $links['transient-set'], $links['transient-read'] );
+
+			$links['error'] = __( 'Error', 'updates-api-inspector' );
+		}
+		?>
+<nav>
+	<ul>
+		<?php
+		if ( 'top' !== $section ) {
+			?>
+			<li><a href='#top'><?php esc_html_e( 'Back to top', 'updates-api-inspector' ); ?></a></li>
+			<?php
+		}
+
+		foreach ( $links as $anchor => $text ) {
+			if ( $anchor !== $section ) {
+				?>
+			<li><a href='#<?php echo esc_attr( $anchor ); ?>'><?php echo esc_html( $text ); ?></a></li>
+				<?php
+			} else {
+				?>
+			<li><?php echo esc_html( $text ); ?></li>
+				<?php
+			}
+		}
+		?>
+	</ul>
+</nav>
+		<?php
+
+			return;
 	}
 }
 
