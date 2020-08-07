@@ -9,8 +9,6 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
 
-    <rule ref="WordPress-Core"></rule>
-
     <rule ref="WordPress">
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.NamingConventions.ValidVariableName" />
