@@ -877,8 +877,8 @@ class Plugin {
 								esc_html__( 'The Auto-updates UI, introduced in WordPress 5.5.0, will not work correctly for externally hosted plugins that do not populate %s with information about their plugin!', 'updates-api-inspector' ),
 								'<code>no_update</code>'
 							);
-							echo '&nbsp;&nbsp;';
-							esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
+						echo '&nbsp;&nbsp;';
+						esc_html_e( 'For more information, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 						?>
 				</p>
 			</div>
@@ -964,7 +964,7 @@ class Plugin {
 								'<code>no_update</code>'
 							);
 						echo '&nbsp;&nbsp;';
-						esc_html_e( 'For more infomration, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
+						esc_html_e( 'For more information, see the sidebar in the Help tab on this screen.', 'updates-api-inspector' );
 						?>
 				</p>
 			</div>
@@ -1278,7 +1278,7 @@ class Plugin {
 
 				$array_stack[ $indent ][] = $i;
 			} elseif ( '),' === $line || ')' === $line ) {
-				// end of an arrary or object.
+				// end of an array or object.
 				// align '=>' based on the longest key in the array/object.
 				// first, find the max length of keys.
 				$max_length = 0;
