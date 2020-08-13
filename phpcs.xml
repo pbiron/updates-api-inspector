@@ -21,18 +21,12 @@
     </rule>
 
     <!-- Silence certain rules -->
-    <rule ref="Squiz.PHP.DisallowBooleanStatement.Found">
-        <severity>0</severity>
-    </rule>
-    <rule ref="Squiz.PHP.DisallowInlineIf.Found">
-        <severity>0</severity>
-    </rule>
-    <rule ref="Squiz.PHP.DisallowComparisonAssignment.AssignedComparison">
-        <severity>0</severity>
-    </rule>
-
-    <!-- Paul's preference ;) -->
     <rule ref="Squiz.PHP">
+        <exclude name="Squiz.PHP.DisallowBooleanStatement.Found" />
+        <exclude name="Squiz.PHP.DisallowInlineIf.Found" />
+        <exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedComparison" />
+
+        <!-- Paul's preference ;) -->
         <exclude name="Squiz.PHP.NonExecutableCode.ReturnNotRequired"/>
     </rule>
 </ruleset>
