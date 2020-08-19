@@ -189,6 +189,9 @@ class Plugin {
 		add_action( 'http_api_debug', array( $this, 'capture_request_response' ), PHP_INT_MAX, 5 );
 		add_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 
+		// make sure another plugin isn't short circuiting the filter.
+		add_filter( 'pre_http_request', array( $this, 'capture_pre_http_request' ), 10, 3 );
+
 		// Query the API.
 		switch ( $type ) {
 			case 'core':
@@ -208,8 +211,31 @@ class Plugin {
 		// remove our capture hooks.
 		remove_action( "set_site_transient_{$transient_name}", array( $this, 'capture_transient_as_set' ), PHP_INT_MAX );
 		remove_action( 'http_api_debug', array( $this, 'capture_request_response' ) );
+		remove_filter( 'pre_http_request', array( $this, 'capture_pre_http_request' ) );
 
 		return;
+	}
+
+	/**
+	 * Fix for plugins that bypass HTTP requests.
+	 *
+	 * @uses 'pre_http_request' filter.
+	 *
+	 * @param bool   $result Default is false, truthy value short circuits the request.
+	 * @param array  $args HTTP request args.
+	 * @param string $url HTTP request URL.
+	 *
+	 * @return bool
+	 */
+	public function capture_pre_http_request( $result, $args, $url ) {
+		if ( $result ) {
+			$this->capture_request_response( $result, 'request', 'Request', $args, $url );
+			if ( true === $result ) {
+				return new \WP_Error( 'short-circuit', 'Some developer incorrectly hooked into `pre_http_request` returning true.' );
+			}
+		}
+
+		return $result;
 	}
 
 	/**
