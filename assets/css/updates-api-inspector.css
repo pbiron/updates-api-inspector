@@ -1,0 +1,60 @@
+/* make room for the admin bar when the jump links are used. */
+body.admin-bar #request,
+body.admin-bar #api_response,
+body.admin-bar #transient_as_set,
+body.admin-bar #transient_as_read {
+	padding-top: 32px;
+}
+
+.updates-api-inspector .jump-links li {
+	float: left;
+}
+
+.updates-api-inspector .jump-links li::after {
+	content: ' | ';
+	display: inline-block;
+	margin: 0 0.5em;
+}
+
+.updates-api-inspector .jump-links li:last-of-type::after {
+	content: '';
+}
+
+.updates-api-inspector .jump-links::after {
+	clear: both;
+	content: '';
+	display: table;
+}
+
+.updates-api-inspector textarea {
+	-moz-tab-size: 4;
+	direction: ltr/*rtl:ignore*/;
+	font-family: monospace;
+	resize: both;
+	tab-size: 4;
+	width: 95%;
+}
+
+.updates-api-inspector textarea[readonly] {
+	background-color: #fff; /* override WP's forms.css, which uses #eee for textarea[readonly] */
+}
+
+.updates-api-inspector a code {
+	background: initial;
+	padding: initial;
+}
+
+@media screen and (max-width: 782px) {
+	/* make room for the admin bar when the jump links are used. */
+	body.admin-bar #request,
+	body.admin-bar #api_response,
+	body.admin-bar #transient_as_set,
+	body.admin-bar #transient_as_read {
+		padding-top: 46px;
+	}
+
+	.updates-api-inspector textarea {
+		-moz-tab-size: 2;
+		tab-size: 2;
+	}
+}
