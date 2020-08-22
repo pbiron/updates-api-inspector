@@ -1,0 +1,11 @@
+# unused is a catchall directory where I store things locally that shouldn't be commited.
+unused/
+vendor/
+node_modules/
+# locally, I have node_modules as a symlink to elsewhere, hence the lack of trailing slash.
+node_modules
+*-rtl.css
+*.min.css
+*.zip
+tests/wp/
+tests/wp-tests-config.php

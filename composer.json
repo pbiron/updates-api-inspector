@@ -1,0 +1,37 @@
+{
+	"name": "shc/updates-api-inspetcor",
+    "description": "Allows you to easily upgrade to Beta releases.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+            "name": "Paul V. Biron",
+            "email": "paul@sparrowhawkcomputing.com",
+            "homepage": "https://sparrowhawkcomputing.com",
+            "role": "Developer"
+        }
+    ],
+	"support": {
+		"issues": "https://github.com/pbiron/updates-api-inspector/issues",
+		"source": "https://github.com/pbiron/updates-api-inspector"
+	},
+    "config": {
+        "sort-packages": true
+    },
+	"minimum-stability": "dev",
+	"extra": {
+		"wordpress-install-dir": "tests/wp"
+	},
+	"autoload": {
+		"classmap": ["plugin.php", "admin", "includes"]
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"johnpbloch/wordpress": "*",
+		"phpcompatibility/phpcompatibility-wp": "^2.1.0",
+		"phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
+		"wp-coding-standards/wpcs": "^2.3.0",
+		"wp-phpunit/wp-phpunit": "*"
+	},
+	"require": {}
+}

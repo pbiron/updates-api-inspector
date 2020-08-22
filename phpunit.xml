@@ -1,0 +1,29 @@
+<phpunit
+		backupGlobals='false'
+		backupStaticAttributes='false'
+		bootstrap='tests/phpunit/wp-tests-bootstrap.php'
+		colors='true'
+		convertErrorsToExceptions='true'
+		convertNoticesToExceptions='true'
+		convertWarningsToExceptions='true'
+		processIsolation='false'
+		stopOnError='false'
+		stopOnFailure='false'
+		stopOnIncomplete='false'
+		stopOnSkipped='false'
+		verbose='true'
+        >
+    <testsuites>
+        <!-- Default test suite to run all tests -->
+        <testsuite name='updates-api-inspector'>
+            <directory suffix='.php'>tests/phpunit/tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+   		<env name='WP_PHPUNIT__TESTS_CONFIG' value='tests/wp-tests-config.php' />
+
+        <const name='WP_PLUGIN_DIR' value='..' />
+        <const name='PLUGIN_TEST_NAME' value='updates-api-inspector' />
+    </php>
+</phpunit>

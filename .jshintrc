@@ -1,0 +1,37 @@
+// started with the .jshintrc used by WP Core (a long time ago).
+// commented out stuff was probably in WP Core's, but a couple are things I
+// added then decided not to use and I can't remember which is which :-)
+{
+//	"boss": true,
+	"curly": true,
+	"eqeqeq": true,
+//	"eqnull": true,
+	"esversion": 5,
+//	"expr": true,
+//	"immed": true,
+	"noarg": true,
+	"nonbsp": true,
+//	"onevar": true,
+//	"quotmark": "double",
+//	"trailing": true,
+	"undef": true,
+	"unused": true,
+	"strict": true,
+//	"trailingcomma": true,
+	"proto": true,
+
+	"browser": true,
+	"devel": true,
+	"jquery": true,
+
+	"globals": {
+		"_": false,
+		"Backbone": false,
+		"jQuery": false,
+		"JSON": false,
+		"wp": false,
+		"export": false,
+		"module": false,
+		"require": false
+	}
+}
