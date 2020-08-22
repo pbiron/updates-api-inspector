@@ -1,10 +1,11 @@
 # Updates API Inspector #
 
 **Contributors:** [pbiron](https://profiles.wordpress.org/pbiron), [afragen](https://profiles.wordpress.org/afragen)  
-**Tags:** updates-api  
+**Tags:** updates, api, auto-updates, updates-api  
 **Requires at least:** 4.6  
+**Requires PHP:** 5.6.0  
 **Tested up to:** 5.5.0  
-**Stable tag:** 0.1.1  
+**Stable tag:** 0.2.0-beta-1  
 **License:** GPL-2.0-or-later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 **Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z6D97FA595WSU  
@@ -13,6 +14,8 @@ Inspect various aspects of the WordPress Updates API
 
 ## Description ##
 
+**Note:** This is a `Beta` pre-release.  No guarantee that anything close to this version will actually be released.
+ 
 The WordPress Updates API is pretty much a mystery to many developers for many reasons, not least of which is the fact that there is *no documentation* for it.
 
 For plugins hosted in the [WordPress Plugin Directory](https://wordpress.org/plugins/) and themes hosted in the [WordPress Theme Directory](https://wordpress.org/themes/) (and core itself), the API "just works".  
@@ -48,19 +51,19 @@ From your WordPress dashboard
 ## Screenshots ##
 
 ### 1. The `Request` for plugin updates ###
-![The `Request` for plugin updates](assets/images/screenshot-1.png?raw=true)
+![The `Request` for plugin updates](.org-repo-assets/screenshot-1.png?raw=true)
 
 ### 2. The `API Response` for plugin updates ###
-![The `API Response` for plugin updates](assets/images/screenshot-2.png?raw=true)
+![The `API Response` for plugin updates](.org-repo-assets/screenshot-2.png?raw=true)
 
 ### 3. The `Transient Value as Set` for plugin updates ###
-![The `Transient Value as Set` for plugin updates](assets/images/screenshot-3.png?raw=true)
+![The `Transient Value as Set` for plugin updates](.org-repo-assets/screenshot-3.png?raw=true)
 
 ### 4. The `Transient Value as Read` for plugin updates ###
-![The `Transient Value as Read` for plugin updates](assets/images/screenshot-4.png?raw=true)
+![The `Transient Value as Read` for plugin updates](.org-repo-assets/screenshot-4.png?raw=true)
 
 ### 5. Multisite ###
-![Multisite](assets/images/screenshot-5.png?raw=true)
+![Multisite](.org-repo-assets/screenshot-5.png?raw=true)
 
 
 ## Frequently Asked Questions ##
@@ -98,17 +101,39 @@ In non-multisite, the Updates API Inspector menu item appers in `Tools`.
 
 In multisite, this plugin can only be network activated (since that's where updates happen) and the menu item appears at the top-level of `Network Admin`.
 
+### What capability does a user need to have to view the inspector? ###
+
+Any user that has been granted the `view_updates_api_inspector` capability can view the inspector.  Additionally, users with `manage_options` (or `manage_network_options` in multisite) are also able to view the inspector.
+
 ### Can I contribute to this plugin? ###
 
-Yes you can!  Development happens on [GitHub](https://github.com/pbiron/updates-api-inspector).  If you find a bug or have other suggestions, please open an issue there.  Pull requests accepted.
+Yes you can!  Development happens on [GitHub](https://github.com/pbiron/updates-api-inspector).  If you find a bug or have other suggestions, please open an issue there.  Pull requests accepted.  Please read [CONTRIBUTING](https://github.com/pbiron/updates-api-inspector/CONTRIBUTING.md).
+
+## Upgrade Notice ##
+
+This version contains bug fixes, including corrections several of the messages displayed that give information about certain aspects of the Updates API.
 
 ## Changelog ##
 
-### 0.1.1 ###
+### 0.2.0 (not yet released) ###
+
+* Complete rewrite
+    * Version 0.1.1 was rushed to release.  Now that WP 5.5 is out the door and things have calmed down, I've had time to think about how the code should be structured.
+    * Minimum PHP version is now 5.6
+
+* Enhancements
+    * new capability, `view_updates_api_inspector`, for accessing the inspector.  By default, this cap maps to `manage_options` (or `manage_network_options` in multisite), but can be granted to any user/role with tools like User Role Editor
+	* API Request/Response is now also captured on [pre_http_request](https://developer.wordpress.org/reference/hooks/pre_http_request) and [http_response](https://developer.wordpress.org/reference/hooks/http_response)
+
+* Bug Fixes
+    * now correctly pretty prints stdClass in PHP < 7.3 and any first class objects in all PHP versions  
+    * string corrections
+
+### 0.1.1 (2020-08-05) ###
 
 * Scrap the use of AJAX: run the update check before the tool page is rendered and output just what we need to.
 * Also adds a minimal help screen and other various code/string cleanup.
 
-### 0.1.0 ###
+### 0.1.0 (2020-08-01) ###
 
 * init commit.
