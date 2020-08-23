@@ -1,6 +1,6 @@
 <?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
- * Base class for all unit tests.
+ * Update Checker tests.
  *
  * @since 0.2.0
  *
@@ -39,6 +39,7 @@ class Test_Update_Checker extends Updates_API_Inspector_UnitTestCase {
 		parent::setUp();
 
 		$this->checker = Update_Checker::get_instance();
+		// Since the update checker is a Singleton, we need to "reset" it before running tests.
 		$this->checker->do_check( '' );
 	}
 

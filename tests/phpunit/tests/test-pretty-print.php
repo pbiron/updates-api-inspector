@@ -15,13 +15,11 @@ use SHC\Updates_API_Inspector\WPCS;
 /**
  * Test that the pretty printer produces output that passes WPCS.
  *
- * @group pp
+ * @group pretty-print
  *
  * @since 0.2.0
  */
 class Test_Pretty_Print extends Updates_API_Inspector_UnitTestCase {
-	const FILE = __DIR__ . '/../data/pp.php';
-
 	/**
 	 * Test that primitive types are pretty printed correctly.
 	 *
