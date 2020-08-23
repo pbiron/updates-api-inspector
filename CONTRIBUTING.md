@@ -66,6 +66,14 @@ As I do not use CI, it will be very much appreciated if you run `grunt precommit
 
 Before running the unit tests, copy `tests/wp-tests-config-sample.php` to `tests/wp-tests-config.php` and edit `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, etc.
 
+When running the unit tests, you'll notice messages during the bootstrap such as:
+
+> Not running ajax tests. To execute these, use --group ajax.
+
+There are similar messages for `ms-files` and `external-http` tests.
+
+This plugin uses the same test harness that WordPress core does and those messages are output by that harness; you can ignore them.
+
 ### Contributing Unit Tests
 
 Unit tests should go into the `tests/phpunit/tests` directory. Each test class should extend the `Updates_API_Inspector_UnitTestCase` class and file names should be prefixed with `test-`, e.g., `tests/phpunit/tests/test-my-new-tests.php`.
