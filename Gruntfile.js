@@ -364,7 +364,7 @@ module.exports = function( grunt ) {
 
 	// finally, register our tasks.
 	grunt.registerTask( 'default', [ 'build' ] );
-	grunt.registerTask( 'build', [ 'clean', 'autoload', 'uglify', 'sass', 'rtlcss', 'cssmin' ] );
+	grunt.registerTask( 'build', [ 'clean', 'autoload', 'uglify', /*'sass',*/ 'rtlcss', 'cssmin' ] );
 
 	grunt.registerTask( 'precommit', [ 'phpunit', 'phpunit_ms', 'phpcs', 'jshint:release' ] );
 	// build and package everything up into a ZIP suitable for installing on a WP site.
