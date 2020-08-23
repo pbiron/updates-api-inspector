@@ -12,11 +12,13 @@ Do you speak a language other than (American) English?  If so, please help [tran
 
 After cloning the `develop` branch of this repo, you'll need to install the development tools:
 
+* [grunt](https://gruntjs.com/getting-started)
 * [npm](https://www.npmjs.com/get-npm)
 * [composer](https://getcomposer.org/)
 
 Then, you'll need to install the dependencies, by running:
 
+* `npm install -g grunt-cli`
 * `npm install`
 * `composer install`
 
@@ -64,7 +66,10 @@ In addition to adhering to WordPress coding/documentation standards, the followi
 
 As I do not use CI, it will be very much appreciated if you run `grunt precommit` locally before submitting PRs.  See [Grunt tasks](#grunt-tasks) above for what that will do.
 
-Before running the unit tests, copy `tests/wp-tests-config-sample.php` to `tests/wp-tests-config.php` and edit `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, etc.
+Before running the unit tests for the first time:
+
+* create an empty database to be used for the tests
+* copy `tests/wp-tests-config-sample.php` to `tests/wp-tests-config.php` and edit `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, etc.
 
 When running the unit tests, you'll notice messages during the bootstrap such as:
 
