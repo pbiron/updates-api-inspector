@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffc36d9465c1e1b9fbb86f2046c6f2ff",
+    "content-hash": "23e70513564358ab185c69921c2d2023",
     "packages": [],
     "packages-dev": [
         {
@@ -75,16 +75,16 @@
         },
         {
             "name": "doctrine/instantiator",
-            "version": "1.3.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "f350df0268e904597e3bd9c4685c53e0e333feea"
+                "reference": "3e7a22aed197e9333cc929e7f6b4300bdae91fcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/f350df0268e904597e3bd9c4685c53e0e333feea",
-                "reference": "f350df0268e904597e3bd9c4685c53e0e333feea",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/3e7a22aed197e9333cc929e7f6b4300bdae91fcc",
+                "reference": "3e7a22aed197e9333cc929e7f6b4300bdae91fcc",
                 "shasum": ""
             },
             "require": {
@@ -102,7 +102,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -127,24 +127,24 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2020-05-29T17:27:14+00:00"
+            "time": "2020-06-15T18:51:04+00:00"
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "5.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "d8a952dd4aa7f7d4d8be6fa145840fde4e248450"
+                "reference": "958a52db618e4a687988b1ed6e4f7e3e7dea4a7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/d8a952dd4aa7f7d4d8be6fa145840fde4e248450",
-                "reference": "d8a952dd4aa7f7d4d8be6fa145840fde4e248450",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/958a52db618e4a687988b1ed6e4f7e3e7dea4a7e",
+                "reference": "958a52db618e4a687988b1ed6e4f7e3e7dea4a7e",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "5.5.0",
+                "johnpbloch/wordpress-core": "dev-master",
                 "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
                 "php": ">=5.6.20"
             },
@@ -166,20 +166,20 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2020-08-11T18:47:19+00:00"
+            "time": "2020-05-13T14:38:18+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "5.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "c49d46de4e4c8972b8ed2aebe3e850f4f218186f"
+                "reference": "f44b0deab42f3da2583b9496063774bcd89553c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/c49d46de4e4c8972b8ed2aebe3e850f4f218186f",
-                "reference": "c49d46de4e4c8972b8ed2aebe3e850f4f218186f",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/f44b0deab42f3da2583b9496063774bcd89553c5",
+                "reference": "f44b0deab42f3da2583b9496063774bcd89553c5",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +187,7 @@
                 "php": ">=5.6.20"
             },
             "provide": {
-                "wordpress/core-implementation": "5.5.0"
+                "wordpress/core-implementation": "dev-master"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -207,7 +207,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2020-08-11T18:47:13+00:00"
+            "time": "2020-08-24T11:06:47+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -261,7 +261,7 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.10.1",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
@@ -571,25 +571,25 @@
         },
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "2.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b"
+                "reference": "cf8df60735d98fd18070b7cab0019ba0831e219c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/cf8df60735d98fd18070b7cab0019ba0831e219c",
+                "reference": "cf8df60735d98fd18070b7cab0019ba0831e219c",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0"
+                "php": ">=7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -616,20 +616,20 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2020-06-27T09:03:43+00:00"
+            "time": "2020-06-19T17:42:03+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44"
+                "reference": "13d9a6bb0b5bbb89d085c7d557c4b55499128eb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d870572532cd70bc3fab58f2e23ad423c8404c44",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/13d9a6bb0b5bbb89d085c7d557c4b55499128eb9",
+                "reference": "13d9a6bb0b5bbb89d085c7d557c4b55499128eb9",
                 "shasum": ""
             },
             "require": {
@@ -668,33 +668,34 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-08-15T11:14:08+00:00"
+            "time": "2020-08-22T07:19:02+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.3.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651"
+                "reference": "94f3ddc5d77e49daadadd33b798b933e52dde82c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e878a14a65245fbe78f8080eba03b47c3b705651",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/94f3ddc5d77e49daadadd33b798b933e52dde82c",
+                "reference": "94f3ddc5d77e49daadadd33b798b933e52dde82c",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0",
+                "php": "^7.2",
                 "phpdocumentor/reflection-common": "^2.0"
             },
             "require-dev": {
-                "ext-tokenizer": "*"
+                "ext-tokenizer": "^7.2",
+                "mockery/mockery": "~1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-1.x": "1.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -713,26 +714,26 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-06-27T10:12:23+00:00"
+            "time": "2020-06-19T19:40:27+00:00"
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.11.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160"
+                "reference": "c99da517f9e7b6e6c4067611d804808c34d8cec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b20034be5efcdab4fb60ca3a29cba2949aead160",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c99da517f9e7b6e6c4067611d804808c34d8cec3",
+                "reference": "c99da517f9e7b6e6c4067611d804808c34d8cec3",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.2",
                 "php": "^7.2",
-                "phpdocumentor/reflection-docblock": "^5.0",
+                "phpdocumentor/reflection-docblock": "^5.2",
                 "sebastian/comparator": "^3.0 || ^4.0",
                 "sebastian/recursion-context": "^3.0 || ^4.0"
             },
@@ -776,7 +777,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-07-08T12:44:21+00:00"
+            "time": "2020-07-21T10:09:02+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -983,7 +984,7 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "3.1.1",
+            "version": "3.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
@@ -1683,16 +1684,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.6",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "e97627871a7eab2f70e59166072a6b767d5834e0"
+                "reference": "d33a6a99ae2f165f1f835ebf1645e471280cbcbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/e97627871a7eab2f70e59166072a6b767d5834e0",
-                "reference": "e97627871a7eab2f70e59166072a6b767d5834e0",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d33a6a99ae2f165f1f835ebf1645e471280cbcbd",
+                "reference": "d33a6a99ae2f165f1f835ebf1645e471280cbcbd",
                 "shasum": ""
             },
             "require": {
@@ -1730,11 +1731,11 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-08-10T04:50:15+00:00"
+            "time": "2020-08-21T00:01:49+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.18.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -1931,16 +1932,16 @@
         },
         {
             "name": "wp-phpunit/wp-phpunit",
-            "version": "5.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-phpunit/wp-phpunit.git",
-                "reference": "5cf5a40954b8c47941afdc08b0000ce42efe5993"
+                "reference": "601228af464798768a932bb98566512d6f8769fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/5cf5a40954b8c47941afdc08b0000ce42efe5993",
-                "reference": "5cf5a40954b8c47941afdc08b0000ce42efe5993",
+                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/601228af464798768a932bb98566512d6f8769fd",
+                "reference": "601228af464798768a932bb98566512d6f8769fd",
                 "shasum": ""
             },
             "type": "library",
@@ -1975,9 +1976,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "dealerdirect/phpcodesniffer-composer-installer": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -17,6 +17,7 @@
   "namespace": "SHC\\Updates_API_Inspector",
   "repository": "https://github.com/pbiron",
   "devDependencies": {
+    "coffeescript": "^2.5.1",
     "grunt": "^1.3.0",
     "grunt-composer": "^0.4.5",
     "grunt-contrib-clean": "^2.0.0",
@@ -30,6 +31,5 @@
     "grunt-text-replace": "^0.4.0",
     "grunt-wp-readme-to-markdown": "^2.0.1",
     "grunt-zip": "^0.18.2"
-  },
-  "dependencies": {}
+  }
 }
